@@ -446,3 +446,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   .carp-foreground,#dragonBridge{animation:none}
   html{scroll-behavior:auto}
 }
+/* Follow Us + Contact: wider cards, no ugly mid-word breaks */
+#socialGrid,#contactGrid{grid-template-columns:repeat(auto-fill,minmax(min(280px,100%),1fr))}
+.social-card>div:last-child{overflow-wrap:anywhere}
+.cvalue{word-break:normal;overflow-wrap:anywhere}
