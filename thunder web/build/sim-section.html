@@ -1,0 +1,41 @@
+<!-- ===================== BIOBUZZ SIMULATOR (opened from Resources; full screen) ===================== -->
+<section id="simulator" aria-label="BIOBUZZ Simulator">
+  <div class="sim-frame" id="simFrame">
+    <iframe id="simIframe" title="BIOBUZZ Simulator" allow="gamepad *; fullscreen *; autoplay *" allowfullscreen></iframe>
+
+    <div class="sim-launch" id="simLaunch">
+      <div class="sim-card" role="dialog" aria-labelledby="simTitle">
+        <a href="#resources" class="sim-back">← Resources</a>
+        <div class="sim-kicker">FTC 2026–2027 · NMA Thunderclaw</div>
+        <h1 id="simTitle">BIOBUZZ Simulator</h1>
+
+        <div class="sim-group">
+          <span class="sim-label">Mode</span>
+          <div class="sim-modes" id="simMode" role="radiogroup" aria-label="Mode">
+            <button type="button" role="radio" data-mode="match" aria-checked="true"><b>Match</b><small>You + bot partner vs 2 bots</small></button>
+            <button type="button" role="radio" data-mode="practice" aria-checked="false"><b>Practice</b><small>Alone on the field</small></button>
+            <button type="button" role="radio" data-mode="duo" aria-checked="false"><b>Two players</b><small>One screen, two controllers</small></button>
+            <button type="button" role="radio" data-mode="auto" aria-checked="false"><b>AUTO strategy</b><small>Program the first 30 seconds</small></button>
+          </div>
+        </div>
+
+        <div class="sim-group">
+          <span class="sim-label">Language</span>
+          <div class="sim-langs" id="simLang" role="radiogroup" aria-label="Language">
+            <button type="button" role="radio" data-lang="vi" aria-checked="false">Tiếng Việt</button>
+            <button type="button" role="radio" data-lang="en" aria-checked="true">English</button>
+          </div>
+        </div>
+
+        <button type="button" class="sim-start" id="simStart"><span id="simStartTxt">Start</span><i aria-hidden="true">⛶</i></button>
+        <p class="sim-status" id="simStatus">Loading simulator…</p>
+        <p class="sim-note">Starts with the game's default settings. Robot, alliance, bots and controls can be changed any time in the in-game menu.</p>
+      </div>
+    </div>
+
+    <div class="sim-float" id="simFloat" hidden>
+      <button type="button" id="simMenuBtn" title="Mode & language" aria-label="Mode & language">☰</button>
+      <a href="#resources" id="simExit" title="Exit simulator" aria-label="Exit simulator">✕</a>
+    </div>
+  </div>
+</section>
