@@ -344,6 +344,11 @@ a.cvalue:hover{color:var(--gold2)}
 .mini-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
 #directorGrid{max-width:220px}
 #directorGrid .team-card .photo{width:108px;height:108px}
+.mentor-grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:8px}
+.mentor-grid .team-card{padding:24px 14px 20px}
+.mentor-grid .team-card .photo{width:100px;height:100px;border:2px solid var(--line2);transition:border-color .15s}
+.mentor-grid .team-card:hover .photo{border-color:var(--gold)}
+.mentor-grid .robot-new{min-height:190px}
 @media(max-width:640px){
   #nav nav{display:none}
 }
@@ -448,6 +453,8 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   .ai-meta{gap:18px}
   .mini-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
   #directorGrid{max-width:none}
+  .mentor-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+  .mentor-grid .team-card .photo{width:84px;height:84px}
   .sp-banner{aspect-ratio:16/8}
   .sp-gallery2{grid-template-columns:repeat(3,1fr)}
   .file-row{padding:10px}
@@ -716,8 +723,11 @@ html.sim-open,html.sim-open body{overflow:hidden}
     <button class="btn ghost" id="aboutEditBtn" hidden>✎ Edit Intro</button>
   </div>
 
-  <h3 class="sub-h"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.6-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></svg> Coach</h3>
+  <h3 class="sub-h"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.6-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></svg> Director</h3>
   <div class="reveal" id="directorGrid"></div>
+
+  <h3 class="sub-h"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-5 9 5-9 5-9-5z"/><path d="M7 11.5V16c0 1.4 2.2 3 5 3s5-1.6 5-3v-4.5"/></svg> Mentor</h3>
+  <div class="mini-grid mentor-grid reveal" id="mentorGrid"></div>
 
   <h3 class="sub-h"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg> Team Seasons</h3>
   <div class="reveal" id="tsRoot"></div>
@@ -2030,13 +2040,30 @@ function openDirectorForm(existing) {
   });
 }
 
-/* ---- team seasons: every season has its own mentors + members (director stays global) ---- */
+/* ---- team seasons: every season has its own members (director + mentors are global, shown above) ---- */
 const TEAM_SUBGROUPS = [['mechanical', 'Mechanical'], ['electrical', 'Electrical'], ['coding', 'Coding']];
 const TS_NONE = '__none';
 let teamSeasons = [], activeTS = null;
 const tsSort = (a, b) => (parseInt(b.year, 10) || 0) - (parseInt(a.year, 10) || 0) || (b.createdAt || 0) - (a.createdAt || 0);
 const inSeason = (m, id) => id === TS_NONE ? (!m.seasonId || !teamSeasons.some(s => s.id === m.seasonId)) : m.seasonId === id;
-function renderMentors() { renderTeamSeasons(); }
+function renderMentors() {
+  const grid = document.getElementById('mentorGrid'); if (!grid) return;
+  const add = canEdit ? `<button type="button" class="robot-new team-new" id="btnNewMentor"><span class="plus">+</span><span>New Mentor</span></button>` : '';
+  const list = [...mentors].sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+  grid.innerHTML = add + list.map(m => memberCardHTML(m, 'mentors')).join('')
+    + (!list.length && !canEdit ? `<p style="color:var(--ink2);font-size:13.5px">No mentors yet.</p>` : '');
+  const nb = document.getElementById('btnNewMentor'); if (nb) nb.addEventListener('click', () => openMentorForm(null));
+  grid.querySelectorAll('.team-card').forEach(c => {
+    const item = mentors.find(x => x.id === c.dataset.id); if (!item) return;
+    c.addEventListener('click', e => { if (e.target.closest('.card-admin')) return; openTeamDetail(item); });
+    c.querySelectorAll('[data-a]').forEach(b => b.addEventListener('click', async e => {
+      e.stopPropagation();
+      if (b.dataset.a === 'e') { openMentorForm(item); return; }
+      if (!dbNS || !confirm('Delete this item?')) return;
+      try { await dbNS.doc('mentors/' + item.id).delete(); } catch (err) { alert('Delete error: ' + (err && (err.code || err.message))); }
+    }));
+  });
+}
 function renderTeam() { renderTeamSeasons(); }
 
 function memberCardHTML(m, coll) {
@@ -2048,15 +2075,15 @@ function memberCardHTML(m, coll) {
 }
 function renderTeamSeasons() {
   const root = document.getElementById('tsRoot'); if (!root) return;
-  const legacy = canEdit ? [...mentors, ...teammates].filter(m => inSeason(m, TS_NONE)).length : 0;
+  const legacy = canEdit ? teammates.filter(m => inSeason(m, TS_NONE)).length : 0;
   if (activeTS && activeTS !== TS_NONE && !teamSeasons.some(s => s.id === activeTS)) activeTS = null;
   if (activeTS === TS_NONE && !legacy) activeTS = null;
   if (activeTS) renderTSRoster(root); else renderTSList(root, legacy);
 }
 function renderTSList(root, legacy) {
   const countHTML = id => {
-    const m = mentors.filter(x => inSeason(x, id)).length, t = teammates.filter(x => inSeason(x, id)).length;
-    return `<span><b>${m}</b>mentor${m === 1 ? '' : 's'}</span><span><b>${t}</b>member${t === 1 ? '' : 's'}</span>`;
+    const t = teammates.filter(x => inSeason(x, id)).length;
+    return `<span><b>${t}</b>member${t === 1 ? '' : 's'}</span>`;
   };
   const card = (id, year, name, admin) => `<article class="ts-card">
       <button type="button" class="ts-open" data-open="${esc(id)}"><span class="ts-year">${esc(year || '—')}</span><span class="ts-name">${esc(name || 'Untitled season')}</span><span class="ts-foot"><span class="ts-count">${countHTML(id)}</span><svg class="ts-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></button>
@@ -2070,18 +2097,16 @@ function renderTSList(root, legacy) {
   const nb = document.getElementById('btnNewTS'); if (nb) nb.addEventListener('click', () => openSeasonForm(null));
   root.querySelectorAll('.ts-card [data-a]').forEach(b => b.addEventListener('click', async () => {
     if (b.dataset.id === TS_NONE) {
-      if (!dbNS || !confirm('Delete ALL unassigned mentors/members?')) return;
+      if (!dbNS || !confirm('Delete ALL unassigned members?')) return;
       try {
-        for (const m of mentors.filter(x => inSeason(x, TS_NONE))) await dbNS.doc('mentors/' + m.id).delete();
         for (const t of teammates.filter(x => inSeason(x, TS_NONE))) await dbNS.doc('teammates/' + t.id).delete();
       } catch (err) { alert('Delete error: ' + (err && (err.code || err.message))); }
       return;
     }
     const s = teamSeasons.find(x => x.id === b.dataset.id); if (!s) return;
     if (b.dataset.a === 'e') { openSeasonForm(s); return; }
-    if (!dbNS || !confirm('Delete this season and ALL mentors/members inside it?')) return;
+    if (!dbNS || !confirm('Delete this season and ALL members inside it?')) return;
     try {
-      for (const m of mentors.filter(x => x.seasonId === s.id)) await dbNS.doc('mentors/' + m.id).delete();
       for (const t of teammates.filter(x => x.seasonId === s.id)) await dbNS.doc('teammates/' + t.id).delete();
       await dbNS.doc('teamSeasons/' + s.id).delete();
     } catch (err) { alert('Delete error: ' + (err && (err.code || err.message))); }
@@ -2090,7 +2115,7 @@ function renderTSList(root, legacy) {
 function renderTSRoster(root) {
   const real = activeTS !== TS_NONE;
   const s = real ? teamSeasons.find(x => x.id === activeTS) : { year: '—', name: 'Unassigned members' };
-  const mem = mentors.filter(m => inSeason(m, activeTS)), team = teammates.filter(t => inSeason(t, activeTS));
+  const team = teammates.filter(t => inSeason(t, activeTS));
   const tech = team.filter(t => t.group === 'tech'), nonTech = team.filter(t => t.group !== 'tech');
   const grid = list => `<div class="mini-grid">${list.map(t => memberCardHTML(t, 'teammates')).join('')}</div>`;
   const techHTML = TEAM_SUBGROUPS.map(([key, label]) => {
@@ -2100,23 +2125,21 @@ function renderTSRoster(root) {
   root.innerHTML = `<button type="button" class="back-link" id="tsBack">← All seasons</button>
     <div class="ts-head"><div><span class="ts-year">${esc(s.year || '—')}</span><h4 class="ts-title">${esc(s.name || '')}</h4></div>
       ${canEdit && real ? `<button type="button" class="btn ghost" id="tsEdit">✎ Edit season</button>` : ''}</div>
-    ${canEdit ? `<div class="ts-actions"><button type="button" class="robot-new team-new" id="btnNewMentor"><span class="plus">+</span><span>New Mentor</span></button><button type="button" class="robot-new team-new" id="btnNewTeam"><span class="plus">+</span><span>New Teammate</span></button></div>` : ''}
-    ${mem.length ? `<div class="team-cat"><h4 class="team-cat-title">Mentor</h4>${`<div class="mini-grid">${mem.map(m => memberCardHTML(m, 'mentors')).join('')}</div>`}</div>` : ''}
+    ${canEdit ? `<div class="ts-actions"><button type="button" class="robot-new team-new" id="btnNewTeam"><span class="plus">+</span><span>New Teammate</span></button></div>` : ''}
     ${techHTML ? `<div class="team-cat"><h4 class="team-cat-title">Tech</h4>${techHTML}</div>` : ''}
     ${nonTech.length ? `<div class="team-cat"><h4 class="team-cat-title">Non-tech</h4>${grid(nonTech)}</div>` : ''}
-    ${!mem.length && !team.length ? `<p class="ts-empty">No members in this season yet.</p>` : ''}`;
+    ${!team.length ? `<p class="ts-empty">No members in this season yet.</p>` : ''}`;
   const preset = real ? activeTS : '';
   document.getElementById('tsBack').addEventListener('click', () => { activeTS = null; renderTeamSeasons(); });
   const ed = document.getElementById('tsEdit'); if (ed) ed.addEventListener('click', () => openSeasonForm(s));
-  const nm = document.getElementById('btnNewMentor'); if (nm) nm.addEventListener('click', () => openMentorForm(null, preset));
   const nt = document.getElementById('btnNewTeam'); if (nt) nt.addEventListener('click', () => openTeamForm(null, preset));
   root.querySelectorAll('.team-card').forEach(c => {
-    const coll = c.dataset.coll, arr = coll === 'mentors' ? mentors : teammates;
-    const item = arr.find(x => x.id === c.dataset.id); if (!item) return;
+    const coll = 'teammates';
+    const item = teammates.find(x => x.id === c.dataset.id); if (!item) return;
     c.addEventListener('click', e => { if (e.target.closest('.card-admin')) return; openTeamDetail(item); });
     c.querySelectorAll('[data-a]').forEach(b => b.addEventListener('click', async e => {
       e.stopPropagation();
-      if (b.dataset.a === 'e') { coll === 'mentors' ? openMentorForm(item) : openTeamForm(item); return; }
+      if (b.dataset.a === 'e') { openTeamForm(item); return; }
       if (!dbNS || !confirm('Delete this item?')) return;
       try { await dbNS.doc(coll + '/' + item.id).delete(); } catch (err) { alert('Delete error: ' + (err && (err.code || err.message))); }
     }));
@@ -2134,13 +2157,12 @@ function openSeasonForm(existing) {
     ],
   });
 }
-function openMentorForm(existing, presetSeason) {
+function openMentorForm(existing) {
   openMini('mentors', {
     title: existing ? 'Edit Mentor' : 'New Mentor', id: existing ? existing.id : null,
     fields: [
       { id: 'name', label: 'Full name', type: 'text', v: existing ? existing.name : '' },
       { id: 'role', label: 'Role (e.g. Technical Mentor)', type: 'text', v: existing ? existing.role : '' },
-      seasonField(existing ? existing.seasonId : presetSeason),
       { id: 'email', label: 'Gmail', type: 'text', v: existing ? (existing.email || '') : '' },
       { id: 'desc', label: 'Short bio (shown only when clicked)', type: 'textarea', v: existing ? existing.desc : '' },
       { id: 'photo', label: 'Photo', type: 'file', v: existing ? existing.photoUrl : '', assetId: existing ? existing.photoAssetId : null },
