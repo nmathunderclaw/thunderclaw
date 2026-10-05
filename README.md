@@ -6,7 +6,7 @@
 
 **The official website of NMA Thunderclaw · FTC Team 32807 · Da Nang, Vietnam**
 
-### [thunderclaw.vercel.app](https://thunderclaw.vercel.app)
+### [thunderclaw.vercel.app](https://thunderweb-beta.vercel.app/)
 
 </div>
 
