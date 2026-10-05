@@ -302,6 +302,31 @@ footer{text-align:center;padding:34px 20px calc(34px + env(safe-area-inset-botto
 .team-subgroup h5{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin:0 0 10px;padding-left:2px;border-left:2px solid var(--line2)}
 .team-new{min-height:auto;flex-direction:row;justify-content:center;gap:10px;padding:10px 16px;margin-bottom:20px;width:max-content}
 .team-new .plus{font-size:18px}
+
+/* team seasons (about) */
+.ts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px}
+.ts-card{position:relative;background:var(--panel);border:1px solid var(--line2);border-radius:var(--r);transition:border-color .15s,background .15s}
+.ts-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--gold2),var(--red2))}
+.ts-card:hover,.ts-card:focus-within{border-color:var(--gold);background:var(--panel2)}
+.ts-card .ts-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;margin-top:14px;padding:12px 0 14px;border-top:1px solid var(--line)}
+.ts-card .ts-count{display:flex;gap:16px;flex-wrap:wrap}
+.ts-card .ts-count b{color:var(--ink2);font-weight:700;margin-right:3px}
+.ts-chev{flex:none;width:18px;height:18px;fill:none;stroke:var(--ink3);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .15s,stroke .15s}
+.ts-card:hover .ts-chev{stroke:var(--gold2);transform:translateX(3px)}
+.ts-card:hover .card-admin,.ts-card:focus-within .card-admin,.team-card:focus-within .card-admin{opacity:1}
+.ts-open{display:flex;flex-direction:column;align-items:flex-start;gap:6px;width:100%;padding:22px 22px 0 26px;text-align:left;color:inherit;font:inherit;cursor:pointer}
+.ts-open:focus-visible,button.back-link:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
+.ts-year{font-family:var(--f-hero);font-size:32px;line-height:1;background:linear-gradient(180deg,var(--gold2),var(--red2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.ts-name{font-weight:700;font-size:15px;line-height:1.5}
+.ts-count{font-size:12px;color:var(--ink3)}
+.ts-head{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+.ts-title{margin:8px 0 0;font-size:20px;line-height:1.5}
+.ts-actions{display:flex;gap:16px;flex-wrap:wrap}
+.ts-card{overflow:hidden}
+.ts-open{height:100%;justify-content:flex-start}
+.ts-card .ts-year{font-size:34px;white-space:nowrap}
+.ts-empty{color:var(--ink2);font-size:14px;line-height:1.5}
+button.back-link{background:none;border:0;padding:0;cursor:pointer;font-family:inherit}
 .td-photo{width:96px;height:96px;border-radius:50%;object-fit:cover;margin:0 auto 14px;background:var(--panel2);display:flex;align-items:center;justify-content:center;font-family:var(--f-hero);font-size:32px;color:var(--line2)}
 .contact-card{text-align:left;display:flex;flex-direction:column;gap:3px;cursor:default}
 .clabel{font-size:10.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--gold2)}
@@ -694,11 +719,8 @@ html.sim-open,html.sim-open body{overflow:hidden}
   <h3 class="sub-h"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.6-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/></svg> Director</h3>
   <div class="reveal" id="directorGrid"></div>
 
-  <h3 class="sub-h"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 4.5-3.4 7.7-8 9-4.6-1.3-8-4.5-8-9V7z"/></svg> Mentor</h3>
-  <div class="mini-grid reveal" id="mentorGrid"></div>
-
-  <h3 class="sub-h"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Team Members</h3>
-  <div class="reveal" id="teamGrid"></div>
+  <h3 class="sub-h"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg> Team Seasons</h3>
+  <div class="reveal" id="tsRoot"></div>
 
   <h3 class="sub-h"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 0 1 0 20a15 15 0 0 1 0-20"/></svg> Follow Us</h3>
   <div class="mini-grid reveal" id="socialGrid"></div>
@@ -1006,7 +1028,7 @@ html.sim-open,html.sim-open body{overflow:hidden}
     'Mission': 'Sứ mệnh', '✎ Edit Intro': '✎ Sửa giới thiệu', 'Director': 'Giám đốc', 'Mentor': 'Cố vấn', 'Team Members': 'Thành viên đội',
     'Follow Us': 'Theo dõi đội', 'Contact': 'Liên hệ', 'Tech': 'Kỹ thuật', 'Non-tech': 'Phi kỹ thuật', 'Mechanical': 'Cơ khí',
     'Electrical': 'Điện', 'Coding': 'Lập trình', 'Follow →': 'Theo dõi →', 'No director info yet.': 'Chưa có thông tin giám đốc.',
-    'Add Director': 'Thêm giám đốc', 'New Mentor': 'Thêm cố vấn', 'New Teammate': 'Thêm thành viên', 'New Social Site': 'Thêm mạng xã hội', 'New Contact': 'Thêm liên hệ',
+    'Add Director': 'Thêm giám đốc', 'New Mentor': 'Thêm cố vấn', 'New Teammate': 'Thêm thành viên', 'New Social Site': 'Thêm mạng xã hội', 'New Contact': 'Thêm liên hệ', 'Team Seasons': 'Đội theo mùa', '← All seasons': '← Tất cả các mùa', '✎ Edit season': '✎ Sửa mùa', 'Unassigned': 'Chưa gán mùa', 'No members in this season yet.': 'Mùa này chưa có thành viên.',
     // seasons
     'Season Archives': 'Lưu trữ các mùa giải', 'No seasons yet.': 'Chưa có mùa giải nào.', '← Season Archives': '← Lưu trữ các mùa giải',
     'Latest': 'Mới nhất', 'New Season': 'Mùa giải mới', 'View Gallery': 'Xem thư viện ảnh', 'Robot Overview': 'Tổng quan robot',
@@ -2008,53 +2030,121 @@ function openDirectorForm(existing) {
   });
 }
 
-/* ---- mentors (multiple, CRUD like team members) ---- */
-function mentorCardHTML(m) {
-  return `<div class="team-card" data-id="${m.id}">
-      ${canEdit ? `<div class="card-admin"><button data-a="e" data-id="${m.id}">✎</button><button data-a="d" data-id="${m.id}">✕</button></div>` : ''}
-      ${m.photoUrl ? `<img class="photo" src="${esc(m.photoUrl)}" alt="">` : `<div class="photo">${esc(initials(m.name))}</div>`}
+/* ---- team seasons: every season has its own mentors + members (director stays global) ---- */
+const TEAM_SUBGROUPS = [['mechanical', 'Mechanical'], ['electrical', 'Electrical'], ['coding', 'Coding']];
+const TS_NONE = '__none';
+let teamSeasons = [], activeTS = null;
+const tsSort = (a, b) => (parseInt(b.year, 10) || 0) - (parseInt(a.year, 10) || 0) || (b.createdAt || 0) - (a.createdAt || 0);
+const inSeason = (m, id) => id === TS_NONE ? (!m.seasonId || !teamSeasons.some(s => s.id === m.seasonId)) : m.seasonId === id;
+function renderMentors() { renderTeamSeasons(); }
+function renderTeam() { renderTeamSeasons(); }
+
+function memberCardHTML(m, coll) {
+  return `<div class="team-card" data-id="${esc(m.id)}" data-coll="${coll}">
+      ${canEdit ? `<div class="card-admin"><button type="button" data-a="e" aria-label="Edit">✎</button><button type="button" data-a="d" aria-label="Delete">✕</button></div>` : ''}
+      ${cleanPhoto(m.photoUrl, m.photoAssetId) ? `<img class="photo" src="${esc(cleanPhoto(m.photoUrl, m.photoAssetId))}" alt="${esc(m.name)}" loading="lazy">` : `<div class="photo">${esc(initials(m.name))}</div>`}
       <div class="tname">${esc(m.name)}</div><div class="trole">${esc(m.role)}</div>
     </div>`;
 }
-function renderMentors() {
-  const add = canEdit ? `<button type="button" class="robot-new team-new" id="btnNewMentor"><span class="plus">+</span><span>New Mentor</span></button>` : '';
-  document.getElementById('mentorGrid').innerHTML = add + mentors.map(mentorCardHTML).join('');
-  wireMiniAdmin('mentorGrid', 'mentors', mentors);
-  const nb = document.getElementById('btnNewMentor'); if (nb) nb.addEventListener('click', () => openMentorForm(null));
-  document.getElementById('mentorGrid').querySelectorAll('.team-card').forEach(c => {
-    c.addEventListener('click', e => { if (e.target.closest('.card-admin')) return; const m = mentors.find(x => x.id === c.dataset.id); if (m) openTeamDetail(m); });
+function renderTeamSeasons() {
+  const root = document.getElementById('tsRoot'); if (!root) return;
+  const legacy = canEdit ? [...mentors, ...teammates].filter(m => inSeason(m, TS_NONE)).length : 0;
+  if (activeTS && activeTS !== TS_NONE && !teamSeasons.some(s => s.id === activeTS)) activeTS = null;
+  if (activeTS === TS_NONE && !legacy) activeTS = null;
+  if (activeTS) renderTSRoster(root); else renderTSList(root, legacy);
+}
+function renderTSList(root, legacy) {
+  const countHTML = id => {
+    const m = mentors.filter(x => inSeason(x, id)).length, t = teammates.filter(x => inSeason(x, id)).length;
+    return `<span><b>${m}</b>mentor${m === 1 ? '' : 's'}</span><span><b>${t}</b>member${t === 1 ? '' : 's'}</span>`;
+  };
+  const card = (id, year, name, admin) => `<article class="ts-card">
+      <button type="button" class="ts-open" data-open="${esc(id)}"><span class="ts-year">${esc(year || '—')}</span><span class="ts-name">${esc(name || 'Untitled season')}</span><span class="ts-foot"><span class="ts-count">${countHTML(id)}</span><svg class="ts-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></button>
+      ${admin ? `<div class="card-admin">${id === TS_NONE ? '' : `<button type="button" data-a="e" data-id="${esc(id)}" aria-label="Edit season">✎</button>`}<button type="button" data-a="d" data-id="${esc(id)}" aria-label="Delete season">✕</button></div>` : ''}
+    </article>`;
+  const add = canEdit ? `<button type="button" class="robot-new team-new" id="btnNewTS"><span class="plus">+</span><span>New Season</span></button>` : '';
+  const cards = [...teamSeasons].sort(tsSort).map(s => card(s.id, s.year, s.name, canEdit)).join('');
+  const old = legacy ? card(TS_NONE, '—', 'Unassigned', true) : '';
+  root.innerHTML = add + (cards || old ? `<div class="ts-grid">${cards}${old}</div>` : `<p class="ts-empty">No seasons yet.</p>`);
+  root.querySelectorAll('[data-open]').forEach(b => b.addEventListener('click', () => { activeTS = b.dataset.open; renderTeamSeasons(); }));
+  const nb = document.getElementById('btnNewTS'); if (nb) nb.addEventListener('click', () => openSeasonForm(null));
+  root.querySelectorAll('.ts-card [data-a]').forEach(b => b.addEventListener('click', async () => {
+    if (b.dataset.id === TS_NONE) {
+      if (!dbNS || !confirm('Delete ALL unassigned mentors/members?')) return;
+      try {
+        for (const m of mentors.filter(x => inSeason(x, TS_NONE))) await dbNS.doc('mentors/' + m.id).delete();
+        for (const t of teammates.filter(x => inSeason(x, TS_NONE))) await dbNS.doc('teammates/' + t.id).delete();
+      } catch (err) { alert('Delete error: ' + (err && (err.code || err.message))); }
+      return;
+    }
+    const s = teamSeasons.find(x => x.id === b.dataset.id); if (!s) return;
+    if (b.dataset.a === 'e') { openSeasonForm(s); return; }
+    if (!dbNS || !confirm('Delete this season and ALL mentors/members inside it?')) return;
+    try {
+      for (const m of mentors.filter(x => x.seasonId === s.id)) await dbNS.doc('mentors/' + m.id).delete();
+      for (const t of teammates.filter(x => x.seasonId === s.id)) await dbNS.doc('teammates/' + t.id).delete();
+      await dbNS.doc('teamSeasons/' + s.id).delete();
+    } catch (err) { alert('Delete error: ' + (err && (err.code || err.message))); }
+  }));
+}
+function renderTSRoster(root) {
+  const real = activeTS !== TS_NONE;
+  const s = real ? teamSeasons.find(x => x.id === activeTS) : { year: '—', name: 'Unassigned members' };
+  const mem = mentors.filter(m => inSeason(m, activeTS)), team = teammates.filter(t => inSeason(t, activeTS));
+  const tech = team.filter(t => t.group === 'tech'), nonTech = team.filter(t => t.group !== 'tech');
+  const grid = list => `<div class="mini-grid">${list.map(t => memberCardHTML(t, 'teammates')).join('')}</div>`;
+  const techHTML = TEAM_SUBGROUPS.map(([key, label]) => {
+    const list = tech.filter(t => t.subgroup === key);
+    return list.length ? `<div class="team-subgroup"><h5>${label}</h5>${grid(list)}</div>` : '';
+  }).join('');
+  root.innerHTML = `<button type="button" class="back-link" id="tsBack">← All seasons</button>
+    <div class="ts-head"><div><span class="ts-year">${esc(s.year || '—')}</span><h4 class="ts-title">${esc(s.name || '')}</h4></div>
+      ${canEdit && real ? `<button type="button" class="btn ghost" id="tsEdit">✎ Edit season</button>` : ''}</div>
+    ${canEdit ? `<div class="ts-actions"><button type="button" class="robot-new team-new" id="btnNewMentor"><span class="plus">+</span><span>New Mentor</span></button><button type="button" class="robot-new team-new" id="btnNewTeam"><span class="plus">+</span><span>New Teammate</span></button></div>` : ''}
+    ${mem.length ? `<div class="team-cat"><h4 class="team-cat-title">Mentor</h4>${`<div class="mini-grid">${mem.map(m => memberCardHTML(m, 'mentors')).join('')}</div>`}</div>` : ''}
+    ${techHTML ? `<div class="team-cat"><h4 class="team-cat-title">Tech</h4>${techHTML}</div>` : ''}
+    ${nonTech.length ? `<div class="team-cat"><h4 class="team-cat-title">Non-tech</h4>${grid(nonTech)}</div>` : ''}
+    ${!mem.length && !team.length ? `<p class="ts-empty">No members in this season yet.</p>` : ''}`;
+  const preset = real ? activeTS : '';
+  document.getElementById('tsBack').addEventListener('click', () => { activeTS = null; renderTeamSeasons(); });
+  const ed = document.getElementById('tsEdit'); if (ed) ed.addEventListener('click', () => openSeasonForm(s));
+  const nm = document.getElementById('btnNewMentor'); if (nm) nm.addEventListener('click', () => openMentorForm(null, preset));
+  const nt = document.getElementById('btnNewTeam'); if (nt) nt.addEventListener('click', () => openTeamForm(null, preset));
+  root.querySelectorAll('.team-card').forEach(c => {
+    const coll = c.dataset.coll, arr = coll === 'mentors' ? mentors : teammates;
+    const item = arr.find(x => x.id === c.dataset.id); if (!item) return;
+    c.addEventListener('click', e => { if (e.target.closest('.card-admin')) return; openTeamDetail(item); });
+    c.querySelectorAll('[data-a]').forEach(b => b.addEventListener('click', async e => {
+      e.stopPropagation();
+      if (b.dataset.a === 'e') { coll === 'mentors' ? openMentorForm(item) : openTeamForm(item); return; }
+      if (!dbNS || !confirm('Delete this item?')) return;
+      try { await dbNS.doc(coll + '/' + item.id).delete(); } catch (err) { alert('Delete error: ' + (err && (err.code || err.message))); }
+    }));
   });
 }
-function openMentorForm(existing) {
+function seasonField(v) {
+  return { id: 'seasonId', label: 'Season', type: 'select', v: v || '', options: [{ v: '', label: '— Unassigned —' }, ...[...teamSeasons].sort(tsSort).map(s => ({ v: s.id, label: (s.year ? s.year + ' · ' : '') + (s.name || '') }))] };
+}
+function openSeasonForm(existing) {
+  openMini('teamSeasons', {
+    title: existing ? 'Edit Season' : 'New Season', id: existing ? existing.id : null,
+    fields: [
+      { id: 'year', label: 'Year (e.g. 2025 or 2025–2026)', type: 'text', v: existing ? existing.year : '' },
+      { id: 'name', label: 'Season name (e.g. INTO THE DEEP)', type: 'text', v: existing ? existing.name : '' },
+    ],
+  });
+}
+function openMentorForm(existing, presetSeason) {
   openMini('mentors', {
     title: existing ? 'Edit Mentor' : 'New Mentor', id: existing ? existing.id : null,
     fields: [
       { id: 'name', label: 'Full name', type: 'text', v: existing ? existing.name : '' },
       { id: 'role', label: 'Role (e.g. Technical Mentor)', type: 'text', v: existing ? existing.role : '' },
+      seasonField(existing ? existing.seasonId : presetSeason),
       { id: 'email', label: 'Gmail', type: 'text', v: existing ? (existing.email || '') : '' },
       { id: 'desc', label: 'Short bio (shown only when clicked)', type: 'textarea', v: existing ? existing.desc : '' },
       { id: 'photo', label: 'Photo', type: 'file', v: existing ? existing.photoUrl : '', assetId: existing ? existing.photoAssetId : null },
     ],
-  });
-}
-
-const TEAM_SUBGROUPS = [['mechanical', 'Mechanical'], ['electrical', 'Electrical'], ['coding', 'Coding']];
-function renderTeam() {
-  const tech = teammates.filter(t => t.group === 'tech');
-  const nonTech = teammates.filter(t => t.group !== 'tech');
-  const add = canEdit ? `<button type="button" class="robot-new team-new" id="btnNewTeam"><span class="plus">+</span><span>New Teammate</span></button>` : '';
-  const techHTML = TEAM_SUBGROUPS.map(([key, label]) => {
-    const list = tech.filter(t => t.subgroup === key);
-    if (!list.length) return '';
-    return `<div class="team-subgroup"><h5>${label}</h5><div class="mini-grid">${list.map(teamCardHTML).join('')}</div></div>`;
-  }).join('');
-  const techBlock = techHTML ? `<div class="team-cat"><h4 class="team-cat-title">Tech</h4>${techHTML}</div>` : '';
-  const nonTechBlock = nonTech.length ? `<div class="team-cat"><h4 class="team-cat-title">Non-tech</h4><div class="mini-grid">${nonTech.map(teamCardHTML).join('')}</div></div>` : '';
-  document.getElementById('teamGrid').innerHTML = add + techBlock + nonTechBlock;
-  wireMiniAdmin('teamGrid', 'teammates', teammates);
-  const nb = document.getElementById('btnNewTeam'); if (nb) nb.addEventListener('click', () => openTeamForm(null));
-  document.getElementById('teamGrid').querySelectorAll('.team-card').forEach(c => {
-    c.addEventListener('click', e => { if (e.target.closest('.card-admin')) return; const t = teammates.find(x => x.id === c.dataset.id); if (t) openTeamDetail(t); });
   });
 }
 
@@ -2144,12 +2234,13 @@ function wireMiniAdmin(gridId, coll, arr) {
   });
 }
 
-function openTeamForm(existing) {
+function openTeamForm(existing, presetSeason) {
   openMini('teammates', {
     title: existing ? 'Edit members' : 'New members', id: existing ? existing.id : null,
     fields: [
       { id: 'name', label: 'Full name', type: 'text', v: existing ? existing.name : '' },
       { id: 'role', label: 'Role (e.g. Team Captain)', type: 'text', v: existing ? existing.role : '' },
+      seasonField(existing ? existing.seasonId : presetSeason),
       { id: 'group', label: 'Group', type: 'select', v: existing ? (existing.group || 'nontech') : 'nontech', options: [{ v: 'tech', label: 'Tech' }, { v: 'nontech', label: 'Non-tech' }] },
       { id: 'subgroup', label: 'Track (Tech)', type: 'select', v: existing ? (existing.subgroup || 'mechanical') : 'mechanical', options: [{ v: 'mechanical', label: 'Mechanical' }, { v: 'electrical', label: 'Electrical' }, { v: 'coding', label: 'Coding' }] },
       { id: 'email', label: 'Gmail', type: 'text', v: existing ? (existing.email || '') : '' },
@@ -2212,13 +2303,18 @@ function openMini(kind, cfg) {
 document.getElementById('miniClose').addEventListener('click', () => closeOvl(miniOvl));
 document.getElementById('miniCancel').addEventListener('click', () => closeOvl(miniOvl));
 miniOvl.addEventListener('click', e => { if (e.target === miniOvl) closeOvl(miniOvl); });
+let miniSaving = false;
 document.getElementById('miniForm').addEventListener('submit', async e => {
   e.preventDefault();
+  if (miniSaving) return; /* chặn bấm Save 2 lần -> tạo bản trùng */
+  miniSaving = true;
+  const saveBtn = e.target.querySelector('[type="submit"]'); if (saveBtn) saveBtn.disabled = true;
+  try {
   if (!dbNS) { alert('Not connected to the database (db).'); return; }
   const data = {};
   document.getElementById('miniFields').querySelectorAll('[data-k]').forEach(el => data[el.dataset.k] = el.value.trim());
   const fileInp = document.getElementById('miniFields').querySelector('[data-file]');
-  if (fileInp) { const fk = fileInp.dataset.file; data[fk + 'AssetId'] = fileInp.dataset.asset || null; data[fk + 'Url'] = blobUrl(fileInp.dataset.asset, document.querySelector(`[data-prev="${fk}"]`).src || ''); }
+  if (fileInp) { const fk = fileInp.dataset.file; data[fk + 'AssetId'] = fileInp.dataset.asset || null; data[fk + 'Url'] = cleanPhoto(document.querySelector(`[data-prev="${fk}"]`).src || '', fileInp.dataset.asset); }
   try {
     if (miniCtx.kind === 'about') { await dbNS.doc('about/main').set(data); }
     else if (miniCtx.kind === 'director') { await dbNS.doc('director/main').set(data); }
@@ -2228,6 +2324,7 @@ document.getElementById('miniForm').addEventListener('submit', async e => {
     else { data.createdAt = Date.now(); await dbNS.collection(miniCtx.kind).add(data); }
     closeOvl(miniOvl);
   } catch (err) { alert('Save error: ' + (err && (err.code || err.message))); }
+  } finally { miniSaving = false; if (saveBtn) saveBtn.disabled = false; }
 });
 
 /* ---- Supabase config: điền 3 giá trị này (Project Settings → API) ---- */
@@ -2284,6 +2381,13 @@ document.getElementById('adminTag').addEventListener('click', async () => {
 });
 
 /* ---- Supabase Storage (ảnh/file) ---- */
+function cleanPhoto(url, assetId) {
+  /* an empty <img src> can resolve to the page's own URL -> treat that as "no photo" */
+  if (assetId) return blobUrl(assetId, url);
+  if (!url) return '';
+  const page = location.href.split('#')[0];
+  return (url === location.href || url.split('#')[0] === page || !/^(https?:|data:|blob:)/.test(url)) ? '' : url;
+}
 function blobUrl(id, fallback) {
   if (!id || !sb) return fallback || '';
   return sb.storage.from(SB_BUCKET).getPublicUrl(id).data.publicUrl;
@@ -2434,6 +2538,7 @@ routeHash();
         snap => { directorData = snap.exists ? snap.data() : null; renderDirector(); },
         () => renderDirector()
       );
+      dbNS.collection('teamSeasons').onSnapshot(snap => { teamSeasons = snap.docs.map(d => ({ id: d.id, ...d.data() })); renderTeamSeasons(); }, () => renderTeamSeasons());
       dbNS.collection('mentors').onSnapshot(snap => { mentors = snap.docs.map(d => ({ id: d.id, ...d.data() })); renderMentors(); }, () => renderMentors());
       dbNS.collection('teammates').onSnapshot(snap => { teammates = snap.docs.map(d => ({ id: d.id, ...d.data() })); renderTeam(); }, () => renderTeam());
       dbNS.collection('contacts').onSnapshot(snap => { contacts = snap.docs.map(d => ({ id: d.id, ...d.data() })); renderContacts(); }, () => renderContacts());
@@ -2701,7 +2806,7 @@ p2KDPx7uwteczgNQxJQsvXtlXRdCG8Z8g7iVDI4395EyhDptqYUpf0QFK+fd0RYKVtqdESH03Es+j2Su
   const page = $('simulator'), frame = $('simFrame'), ifr = $('simIframe'), launch = $('simLaunch'), float = $('simFloat');
   if (!page || !ifr) return;
   const SIM_KEY = 'biobuzz-sim-v2';
-  let blobUrl = null, building = null, booted = false, mode = 'match', pending = null, readyT = null, isOpen = false;
+  let blobUrl = null, building = null, booted = false, mode = 'menu', pending = null, readyT = null, isOpen = false;
 
   const simWin = () => { try { return ifr.contentWindow; } catch (e) { return null; } };
   const simApp = () => { const w = simWin(); try { return w && w.BBAPP && w.BBUI ? w : null; } catch (e) { return null; } };
@@ -2750,7 +2855,18 @@ p2KDPx7uwteczgNQxJQsvXtlXRdCG8Z8g7iVDI4395EyhDptqYUpf0QFK+fd0RYKVtqdESH03Es+j2Su
     document.querySelectorAll('#simLang [data-lang]').forEach(b => b.setAttribute('aria-checked', b.dataset.lang === siteLang() ? 'true' : 'false'));
   }
   window.addEventListener('tc-lang', e => { seedSimLang(e.detail.lang); if (e.detail.from !== 'sim') pushSimLang(e.detail.lang); syncLangButtons(); });
-  $('simLang').addEventListener('click', e => { const b = e.target.closest('[data-lang]'); if (b && window.TCI18N) { window.TCI18N.set(b.dataset.lang); seedSimLang(b.dataset.lang); enforceLang(); } syncLangButtons(); });
+  $('simLang').addEventListener('click', e => {
+    const b = e.target.closest('[data-lang]');
+    if (b && window.TCI18N) {
+      window.TCI18N.set(b.dataset.lang); seedSimLang(b.dataset.lang); enforceLang();
+      syncLangButtons();
+      // picking a language from the launcher opens the game's menu (not mid-match, where ☰ only switches language)
+      const w = simApp(); let playing = false; try { playing = !!(w && w.BBAPP.mode === 'play'); } catch (er) {}
+      if (!playing) start();
+      return;
+    }
+    syncLangButtons();
+  });
 
   // ---------------------------------------------------------------- loading
   function getBlobUrl() {
@@ -2849,7 +2965,7 @@ p2KDPx7uwteczgNQxJQsvXtlXRdCG8Z8g7iVDI4395EyhDptqYUpf0QFK+fd0RYKVtqdESH03Es+j2Su
       hookSimLang();                                   // make sure the game uses the language chosen in the launcher
       if (w.BBAU && w.BBAU.ctx && w.BBAU.ctx.state === 'suspended') w.BBAU.ctx.resume();
       if (S.mode !== 'menu' && S.toMenu) S.toMenu();
-      if (m === 'match' || m === 'practice') S.start(m); else UI.show(m);
+      if (m === 'match' || m === 'practice') S.start(m); else if (m !== 'menu') UI.show(m);
     } catch (e) { status(String(e && e.message || e), true); showLaunch(true); return; }
     setTimeout(() => { try { ifr.focus(); simWin().focus(); } catch (e) {} }, 60);
     enforceLang();
