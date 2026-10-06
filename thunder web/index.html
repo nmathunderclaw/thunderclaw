@@ -3085,5 +3085,28 @@ p2KDPx7uwteczgNQxJQsvXtlXRdCG8Z8g7iVDI4395EyhDptqYUpf0QFK+fd0RYKVtqdESH03Es+j2Su
 })();
 
 </script>
+<script>
+/* ---- Analytics: ghi lượt truy cập web + game vào Supabase qua /api/track (server lấy IP thật) ---- */
+(function () {
+  'use strict';
+  var sid;
+  try { sid = sessionStorage.getItem('tc_sid'); if (!sid) { sid = Math.random().toString(36).slice(2) + Date.now().toString(36); sessionStorage.setItem('tc_sid', sid); } } catch (e) { sid = 'na'; }
+  function send(ev) {
+    try {
+      var body = JSON.stringify({ event: ev, path: location.hash || '#home', ref: document.referrer || '', sid: sid });
+      if (navigator.sendBeacon) navigator.sendBeacon('/api/track', new Blob([body], { type: 'application/json' }));
+      else fetch('/api/track', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: body, keepalive: true });
+    } catch (e) {}
+  }
+  var last = null;
+  function onRoute() {
+    var h = location.hash.replace(/^#/, '').split('/')[0] || 'home';
+    if (h === last) return; last = h;
+    if (h === 'simulator') send('sim_open'); else send('page_view');
+  }
+  addEventListener('hashchange', onRoute);
+  onRoute();
+})();
+</script>
 </body>
 </html>
