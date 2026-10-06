@@ -594,6 +594,32 @@ html.sim-open,html.sim-open body{overflow:hidden}
 .sim-promo-go{flex:none;font:700 12.5px var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
 @media(max-width:560px){ .sim-promo{flex-wrap:wrap;gap:14px} .sim-promo-go{width:100%} }
 
+
+/* ===== Intro video (đầu trang) ===== */
+#introVideo{position:relative;height:100vh;height:100svh;min-height:260px;background:#000;box-sizing:border-box;display:flex;align-items:center;justify-content:center;overflow:hidden}
+#introVideo video{width:100%;height:100%;object-fit:cover;background:#000;display:block;cursor:pointer}
+#introVideo .iv-btn{position:absolute;z-index:3;display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.35);background:rgba(10,5,4,.6);backdrop-filter:blur(6px);color:#fff;font:700 13px/1 var(--f-body);letter-spacing:.04em;padding:10px 14px;border-radius:999px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+#introVideo .iv-btn:hover{border-color:#ffd25a}
+#introVideo::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;z-index:4;background:linear-gradient(90deg,transparent,#ffd25a 50%,transparent);box-shadow:0 0 16px 2px rgba(255,210,90,.35);pointer-events:none}
+#ivSound{right:max(16px,env(safe-area-inset-right,0px));bottom:max(18px,env(safe-area-inset-bottom,0px))}
+#ivFull{left:max(16px,env(safe-area-inset-left,0px));bottom:max(18px,env(safe-area-inset-bottom,0px))}
+#ivSound .on,#introVideo.unmuted #ivSound .off{display:none}
+#introVideo.unmuted #ivSound .on{display:inline}
+#introVideo:not(.unmuted) #ivSound{animation:ivPulse 1.8s ease-in-out infinite}
+@keyframes ivPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,210,90,.45)}50%{box-shadow:0 0 0 9px rgba(255,210,90,0)}}
+#ivPlay{position:absolute;z-index:2;top:50%;left:50%;transform:translate(-50%,-50%);width:76px;height:76px;border-radius:50%;border:2px solid #ffd25a;background:rgba(0,0,0,.55);color:#ffd25a;font-size:28px;display:none;align-items:center;justify-content:center;cursor:pointer;padding:0 0 0 5px}
+#introVideo.idle #ivPlay{display:flex}
+#ivCue{position:absolute;z-index:2;left:0;right:0;bottom:max(20px,env(safe-area-inset-bottom,0px));text-align:center;font:600 12px/1 var(--f-body);letter-spacing:.2em;color:rgba(255,255,255,.65);pointer-events:none;animation:ivBob 2s ease-in-out infinite}
+@keyframes ivBob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+#ivRotate{display:none;position:absolute;z-index:2;left:0;right:0;top:calc(74px + 56.25vw + 26px);text-align:center;padding:0 24px;color:rgba(255,255,255,.7);font:500 14px/1.4 var(--f-body)}
+@media(orientation:portrait) and (max-width:860px){
+  #introVideo video{position:absolute;width:100vh;width:100svh;height:100vw;max-width:none;left:50%;top:50%;transform:translate(-50%,-50%) rotate(90deg)}
+  #ivRotate{display:none}
+}
+@media(orientation:landscape) and (max-height:520px){#introVideo .iv-btn{padding:8px 12px;font-size:12px}}
+#nav{transition:transform .45s cubic-bezier(.2,.7,.2,1),opacity .3s ease}
+html.at-intro #nav{transform:translateY(-110%);opacity:0;pointer-events:none}
+@media(prefers-reduced-motion:reduce){#ivCue,#introVideo:not(.unmuted) #ivSound{animation:none}}
 </style>
 </head>
 <body>
@@ -606,6 +632,15 @@ html.sim-open,html.sim-open body{overflow:hidden}
     <button id="navToggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navMenu"><span></span><span></span><span></span></button>
   </div>
 </div>
+
+<section id="introVideo" aria-label="Thunderclaw intro video">
+  <video id="ivVideo" muted playsinline webkit-playsinline preload="auto" poster="media/intro-poster.jpg" disablepictureinpicture controlslist="nodownload noremoteplayback"></video>
+  <button type="button" id="ivPlay" aria-label="Play">▶</button>
+  <button type="button" class="iv-btn" id="ivFull" aria-label="Fullscreen">⛶</button>
+  <button type="button" class="iv-btn" id="ivSound"><span class="off">🔇 <span>Turn sound on</span></span><span class="on">🔊 <span>Mute</span></span></button>
+  <div id="ivRotate">Rotate your phone to landscape for the best view</div>
+  <div id="ivCue">SCROLL DOWN ↓</div>
+</section>
 
 <section id="hero">
   <svg class="scene-svg" aria-hidden="true" viewBox="0 0 1500 850" preserveAspectRatio="xMidYMax slice">
@@ -1052,7 +1087,7 @@ html.sim-open,html.sim-open body{overflow:hidden}
     '© NMA Thunderclaw · FTC Team 32807 · Da Nang, Vietnam': '© NMA Thunderclaw · Đội FTC 32807 · Đà Nẵng, Việt Nam',
     // hero / home
     'FTC 32807 · Da Nang, Vietnam': 'FTC 32807 · Đà Nẵng, Việt Nam',
-    'Explore our robots': 'Khám phá robot của đội', 'Try BIOBUZZ Sim': 'Chơi thử BIOBUZZ Sim', 'SCROLL DOWN ↓': 'CUỘN XUỐNG ↓',
+    'Explore our robots': 'Khám phá robot của đội', 'Try BIOBUZZ Sim': 'Chơi thử BIOBUZZ Sim', 'SCROLL DOWN ↓': 'CUỘN XUỐNG ↓', 'Turn sound on': 'Bật tiếng', 'Mute': 'Tắt tiếng', 'Rotate your phone to landscape for the best view': 'Xoay ngang điện thoại để xem rõ hơn',
     'Team Code': 'Mã đội', 'Members': 'Thành viên', 'Seasons Joined': 'Số mùa tham gia', 'Status': 'Trạng thái', 'Active': 'Đang hoạt động',
     '✎ Edit Info': '✎ Sửa thông tin',
     // about
@@ -1302,7 +1337,7 @@ setInterval(() => { if (Math.random() < .5) strikeLightning(); }, 2400);
 /* ---- seasons (a season IS its robot: name, year, 3D file, specs...) ---- */
 let seasons = [], canEdit = false, editingId = null, dbNS = null, assetsNS = null;
 let fSpecsRows = [], fAchRows = [], fAlbumPhotos = [], fBannerAssetId = null, fVideos = [];
-const HOME_IDS = ['hero', 'homeStats'];
+const HOME_IDS = ['introVideo', 'hero', 'homeStats'];
 
 function esc(s) { return String(s || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
 function seasonExcerpt(s) { return (s.overview || '').slice(0, 90); }
@@ -3084,6 +3119,167 @@ p2KDPx7uwteczgNQxJQsvXtlXRdCG8Z8g7iVDI4395EyhDptqYUpf0QFK+fd0RYKVtqdESH03Es+j2Su
   window.__simRoute();          // deep link straight to #simulator
 })();
 
+</script>
+<script>
+/* ---- Intro video: tự phát (không tiếng) khi nhìn thấy; cuộn khỏi thì tắt tiếng + dừng; bấm Home thì nhảy thẳng tới Home ---- */
+(function () {
+  'use strict';
+  var sec = document.getElementById('introVideo'), v = document.getElementById('ivVideo');
+  if (!sec || !v) return;
+  var hero = document.getElementById('hero');
+  var root = document.documentElement;
+  function navState() { root.classList.toggle('at-intro', sec.offsetParent !== null && window.pageYOffset < sec.offsetHeight * 0.5); }
+  addEventListener('scroll', navState, { passive: true });
+  addEventListener('resize', navState);
+  addEventListener('hashchange', function () { setTimeout(navState, 0); });
+  navState();
+  var c = navigator.connection || {};
+  var slow = c.saveData || /(^|-)2g|3g/.test(c.effectiveType || '');
+  var src = slow ? 'media/intro-sm.mp4' : 'media/intro.mp4';
+  var loaded = false, visible = false;
+  function load() { if (loaded) return; loaded = true; v.src = src; v.load(); }
+  var first = true;
+  function idle() { sec.classList.add('idle'); }
+  function play() {
+    load();
+    var p;
+    if (first) {   /* lần đầu: thử có tiếng; trình duyệt chặn thì tự chuyển sang không tiếng */
+      first = false; v.muted = false;
+      p = v.play();
+      if (p && p.catch) p.catch(function () { v.muted = true; var q = v.play(); if (q && q.catch) q.catch(idle); });
+    } else { p = v.play(); if (p && p.catch) p.catch(idle); }
+  }
+  function stop() { v.muted = true; v.pause(); }
+
+  visible = true; play();
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (es) {
+      visible = es[0].isIntersecting && es[0].intersectionRatio >= 0.35;
+      if (visible && !document.hidden) play();
+      else stop();
+    }, { threshold: [0, 0.35, 0.6] }).observe(sec);
+  } else { play(); }
+  document.addEventListener('visibilitychange', function () { if (document.hidden) stop(); else if (visible) play(); });
+
+  v.addEventListener('play', function () { sec.classList.remove('idle'); });
+  ['touchstart', 'pointerdown', 'keydown', 'wheel'].forEach(function (ev) {
+    addEventListener(ev, function once() { removeEventListener(ev, once); if (visible && v.paused && !v.ended) { var q = v.play(); if (q && q.catch) q.catch(idle); } }, { passive: true });
+  });
+  ['pause', 'ended'].forEach(function (e) { v.addEventListener(e, function () { if (visible) sec.classList.add('idle'); }); });
+  v.addEventListener('volumechange', function () { sec.classList.toggle('unmuted', !v.muted); });
+  function toggle() { if (v.paused || v.ended) play(); else v.pause(); }
+  v.addEventListener('click', toggle);
+  document.getElementById('ivPlay').addEventListener('click', toggle);
+  document.getElementById('ivSound').addEventListener('click', function () { v.muted = !v.muted; if (!v.muted) { v.volume = 1; if (v.paused) play(); } });
+  document.getElementById('ivFull').addEventListener('click', function () {
+    try {
+      if (v.webkitEnterFullscreen && !sec.requestFullscreen) { v.webkitEnterFullscreen(); return; }
+      var r = (sec.requestFullscreen || sec.webkitRequestFullscreen).call(sec);
+      Promise.resolve(r).then(function () { try { screen.orientation.lock('landscape').catch(function () {}); } catch (e) {} }).catch(function () {});
+    } catch (e) {}
+  });
+  document.addEventListener('fullscreenchange', function () { if (!document.fullscreenElement) { try { screen.orientation.unlock(); } catch (e) {} } });
+
+  /* Bấm "Home" (menu, logo, nút ← Home) => hiện thẳng Home, video nằm phía trên, cuộn lên mới thấy */
+  function homeVisible() { return sec.offsetParent !== null || (hero && hero.offsetParent !== null); }
+  function toHero(smooth) {
+    if (!hero) return;
+    var top = heroTop();
+    if (smooth) go(top); else window.scrollTo({ top: top, behavior: 'instant' });
+  }
+  addEventListener('hashchange', function () {
+    var h = location.hash.replace(/^#/, '');
+    if (h === 'home') toHero(false);                                   /* Home, không hiện video */
+    else if (h === '') window.scrollTo({ top: 0, behavior: 'instant' });  /* trang video */
+  });
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href="#home"]');
+    if (!a || !homeVisible()) return;               /* đang ở trang khác: để hashchange xử lý */
+    e.preventDefault();
+    if (location.hash !== '#home') { try { history.replaceState(null, '', '#home'); } catch (x) {} }
+    toHero(true);
+  });
+
+  /* ---- Khựng đúng ranh giới giữa 2 trang (video <-> Home), không để trang này chèn sang trang kia ---- */
+  var reduceMo = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var anim = false, lockUntil = 0, lastY = window.pageYOffset, lastDir = 1, tStart = null, touching = false, settleT = null;
+  function heroTop() { return Math.round(hero.getBoundingClientRect().top + window.pageYOffset); }
+  function active() { return sec.offsetParent !== null && !document.fullscreenElement && !document.querySelector('.ovl.show'); }
+  function ease(t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+  function go(target) {
+    var from = window.pageYOffset, dist = target - from;
+    if (Math.abs(dist) < 2) { window.scrollTo({ top: target, behavior: 'instant' }); return; }
+    var dur = reduceMo ? 0 : Math.min(800, 380 + Math.abs(dist) * 0.35), t0 = null;
+    anim = true;
+    (function step(ts) {
+      if (t0 === null) t0 = ts;
+      var k = dur ? Math.min(1, (ts - t0) / dur) : 1;
+      window.scrollTo({ top: from + dist * ease(k), behavior: 'instant' });
+      if (k < 1) requestAnimationFrame(step);
+      else { window.scrollTo({ top: target, behavior: 'instant' }); anim = false; lockUntil = Date.now() + 550; lastY = window.pageYOffset; }
+    })(performance.now());
+  }
+  /* chuột / touchpad: một nhịp cuộn = lật hẳn sang trang kia */
+  addEventListener('wheel', function (e) {
+    if (!active() || e.ctrlKey || !e.deltaY) return;
+    var y = window.pageYOffset, H = heroTop();
+    if (anim || Date.now() < lockUntil) { if (y <= H + 1) e.preventDefault(); return; }
+    if (e.deltaY > 0 && y < H - 1) { e.preventDefault(); go(H); }
+    else if (e.deltaY < 0 && y > 0 && y <= H + 1) { e.preventDefault(); go(0); }
+  }, { passive: false });
+  /* điện thoại: thả tay là hút vào trang theo chiều vuốt */
+  addEventListener('touchstart', function (e) { touching = true; tStart = e.touches[0].clientY; }, { passive: true });
+  addEventListener('touchcancel', function () { touching = false; tStart = null; }, { passive: true });
+  addEventListener('touchend', function (e) {
+    touching = false;
+    if (tStart === null) return;
+    var dy = tStart - (e.changedTouches[0] ? e.changedTouches[0].clientY : tStart); tStart = null;
+    if (!active() || anim) return;
+    var y = window.pageYOffset, H = heroTop();
+    if (y > 1 && y < H - 1) go(dy > 12 ? H : dy < -12 ? 0 : (y > H / 2 ? H : 0));
+  }, { passive: true });
+  /* bàn phím */
+  addEventListener('keydown', function (e) {
+    if (!active() || e.altKey || e.ctrlKey || e.metaKey) return;
+    var t = e.target, tag = t && t.tagName;
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || (t && t.isContentEditable)) return;
+    if (e.key === ' ' && (tag === 'BUTTON' || tag === 'A' || tag === 'VIDEO')) return;
+    var down = e.key === 'ArrowDown' || e.key === 'PageDown' || (e.key === ' ' && !e.shiftKey);
+    var up = e.key === 'ArrowUp' || e.key === 'PageUp' || (e.key === ' ' && e.shiftKey);
+    if (!down && !up) return;
+    var y = window.pageYOffset, H = heroTop();
+    if (anim) { e.preventDefault(); return; }
+    if (down && y < H - 1) { e.preventDefault(); go(H); }
+    else if (up && y > 0 && y <= H + 1) { e.preventDefault(); go(0); }
+  });
+  /* dự phòng (kéo thanh cuộn...): dừng lại giữa chừng thì hút về trang gần nhất theo chiều đang cuộn */
+  addEventListener('scroll', function () {
+    var y = window.pageYOffset;
+    if (!anim && y !== lastY) lastDir = y > lastY ? 1 : -1;
+    lastY = y;
+    clearTimeout(settleT);
+    if (anim || touching || !active()) return;
+    settleT = setTimeout(function () {
+      if (anim || touching || !active()) return;
+      var yy = window.pageYOffset, H = heroTop();
+      if (yy > 1 && yy < H - 1) go(lastDir > 0 ? (yy > H * 0.08 ? H : 0) : (yy < H * 0.92 ? 0 : H));
+    }, 140);
+  }, { passive: true });
+
+  /* Bấm logo góc trái => về trang video */
+  var logo = document.getElementById('brandLogo');
+  if (logo) {
+    logo.style.cursor = 'pointer';
+    logo.addEventListener('click', function () {
+      var t = document.getElementById('navToggle');
+      if (t && t.getAttribute('aria-expanded') === 'true') t.click();
+      if (sec.offsetParent !== null) {
+        if (location.hash) { try { history.replaceState(null, '', location.pathname + location.search); } catch (x) {} }
+        go(0);
+      } else { location.hash = ''; }
+    });
+  }
+})();
 </script>
 <script>
 /* ---- Analytics: ghi lượt truy cập web + game vào Supabase qua /api/track (server lấy IP thật) ---- */
