@@ -311,6 +311,10 @@ footer{text-align:center;padding:34px 20px calc(34px + env(safe-area-inset-botto
 .team-card:hover{border-color:var(--gold)}
 .team-card .photo{width:88px;height:88px;border-radius:50%;object-fit:cover;margin:0 auto 12px;background:var(--panel2);display:flex;align-items:center;justify-content:center;font-family:var(--f-hero);font-size:28px;color:var(--line2)}
 .team-card .tname{font-weight:700;font-size:15px}
+.team-card.is-main{border-color:var(--gold)}
+.team-card.is-main .photo{border-color:var(--gold)!important}
+.mbadge{position:absolute;top:10px;left:10px;font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--gold);color:#1a0d08;padding:3px 8px;border-radius:999px}
+.team-card .tyears{font-size:12px;color:var(--ink2);margin-top:5px}
 .team-card .trole{font-size:10.5px;color:var(--gold2);text-transform:uppercase;letter-spacing:.07em;margin:3px 0 0}
 .team-cat{margin-bottom:26px}
 .team-cat-title{font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--red2);margin:0 0 14px;display:flex;align-items:center;gap:8px}
@@ -1095,7 +1099,7 @@ html.at-intro #nav{transform:translateY(-110%);opacity:0;pointer-events:none}
     'Mission': 'Sứ mệnh', '✎ Edit Intro': '✎ Sửa giới thiệu', 'Director': 'Giám đốc', 'Mentor': 'Cố vấn', 'Team Members': 'Thành viên đội',
     'Follow Us': 'Theo dõi đội', 'Contact': 'Liên hệ', 'Tech': 'Kỹ thuật', 'Non-tech': 'Phi kỹ thuật', 'Mechanical': 'Cơ khí',
     'Electrical': 'Điện', 'Coding': 'Lập trình', 'Follow →': 'Theo dõi →', 'No director info yet.': 'Chưa có thông tin giám đốc.',
-    'Add Director': 'Thêm giám đốc', 'New Mentor': 'Thêm cố vấn', 'New Teammate': 'Thêm thành viên', 'New Social Site': 'Thêm mạng xã hội', 'New Contact': 'Thêm liên hệ', 'Team Seasons': 'Đội theo mùa', '← All seasons': '← Tất cả các mùa', '✎ Edit season': '✎ Sửa mùa', 'Unassigned': 'Chưa gán mùa', 'No members in this season yet.': 'Mùa này chưa có thành viên.',
+    'Add Director': 'Thêm giám đốc', 'New Mentor': 'Thêm cố vấn', 'Main mentor': 'Cố vấn chính', 'New Teammate': 'Thêm thành viên', 'New Social Site': 'Thêm mạng xã hội', 'New Contact': 'Thêm liên hệ', 'Team Seasons': 'Đội theo mùa', '← All seasons': '← Tất cả các mùa', '✎ Edit season': '✎ Sửa mùa', 'Unassigned': 'Chưa gán mùa', 'No members in this season yet.': 'Mùa này chưa có thành viên.',
     // seasons
     'Season Archives': 'Lưu trữ các mùa giải', 'No seasons yet.': 'Chưa có mùa giải nào.', '← Season Archives': '← Lưu trữ các mùa giải',
     'Latest': 'Mới nhất', 'New Season': 'Mùa giải mới', 'View Gallery': 'Xem thư viện ảnh', 'Robot Overview': 'Tổng quan robot',
@@ -2129,7 +2133,7 @@ const inSeason = (m, id) => id === TS_NONE ? (!m.seasonId || !teamSeasons.some(s
 function renderMentors() {
   const grid = document.getElementById('mentorGrid'); if (!grid) return;
   const add = canEdit ? `<button type="button" class="robot-new team-new" id="btnNewMentor"><span class="plus">+</span><span>New Mentor</span></button>` : '';
-  const list = [...mentors].sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+  const list = [...mentors].sort((a, b) => ((b.tier === 'main') - (a.tier === 'main')) || ((a.createdAt || 0) - (b.createdAt || 0)));
   grid.innerHTML = add + list.map(m => memberCardHTML(m, 'mentors')).join('')
     + (!list.length && !canEdit ? `<p style="color:var(--ink2);font-size:13.5px">No mentors yet.</p>` : '');
   const nb = document.getElementById('btnNewMentor'); if (nb) nb.addEventListener('click', () => openMentorForm(null));
@@ -2147,10 +2151,12 @@ function renderMentors() {
 function renderTeam() { renderTeamSeasons(); }
 
 function memberCardHTML(m, coll) {
-  return `<div class="team-card" data-id="${esc(m.id)}" data-coll="${coll}">
+  const isMain = coll === 'mentors' && m.tier === 'main';
+  return `<div class="team-card${isMain ? ' is-main' : ''}" data-id="${esc(m.id)}" data-coll="${coll}">
+      ${isMain ? `<span class="mbadge">Main mentor</span>` : ''}
       ${canEdit ? `<div class="card-admin"><button type="button" data-a="e" aria-label="Edit">✎</button><button type="button" data-a="d" aria-label="Delete">✕</button></div>` : ''}
       ${cleanPhoto(m.photoUrl, m.photoAssetId) ? `<img class="photo" src="${esc(cleanPhoto(m.photoUrl, m.photoAssetId))}" alt="${esc(m.name)}" loading="lazy">` : `<div class="photo">${esc(initials(m.name))}</div>`}
-      <div class="tname">${esc(m.name)}</div><div class="trole">${esc(m.role)}</div>
+      <div class="tname">${esc(m.name)}</div><div class="trole">${esc(m.role)}</div>${coll === 'mentors' && m.years ? `<div class="tyears">${esc(m.years)}</div>` : ''}
     </div>`;
 }
 function renderTeamSeasons() {
@@ -2243,6 +2249,8 @@ function openMentorForm(existing) {
     fields: [
       { id: 'name', label: 'Full name', type: 'text', v: existing ? existing.name : '' },
       { id: 'role', label: 'Role (e.g. Technical Mentor)', type: 'text', v: existing ? existing.role : '' },
+      { id: 'tier', label: 'Mentor type', type: 'select', v: existing ? (existing.tier || 'regular') : 'regular', options: [{ v: 'regular', label: 'Mentor' }, { v: 'main', label: 'Main mentor' }] },
+      { id: 'years', label: 'Working years (e.g. 2023 – Present)', type: 'text', v: existing ? (existing.years || '') : '' },
       { id: 'email', label: 'Gmail', type: 'text', v: existing ? (existing.email || '') : '' },
       { id: 'desc', label: 'Short bio (shown only when clicked)', type: 'textarea', v: existing ? existing.desc : '' },
       { id: 'photo', label: 'Photo', type: 'file', v: existing ? existing.photoUrl : '', assetId: existing ? existing.photoAssetId : null },
@@ -2255,7 +2263,7 @@ const teamDetailOvl = document.getElementById('teamDetailOvl');
 function openTeamDetail(t) {
   document.getElementById('tdName').textContent = t.name;
   document.getElementById('tdPhotoWrap').innerHTML = t.photoUrl ? `<img class="td-photo" src="${esc(t.photoUrl)}" alt="">` : `<div class="td-photo">${esc(initials(t.name))}</div>`;
-  document.getElementById('tdRole').textContent = t.role || '';
+  document.getElementById('tdRole').textContent = [t.role, t.years].filter(Boolean).join(' · ');
   const desc = document.getElementById('tdDesc'); desc.textContent = t.desc || ''; desc.hidden = !t.desc;
   const email = document.getElementById('tdEmail');
   if (t.email) { email.href = 'mailto:' + t.email; email.textContent = '✉ ' + t.email; email.style.display = 'inline-block'; }
