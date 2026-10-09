@@ -624,6 +624,49 @@ html.sim-open,html.sim-open body{overflow:hidden}
 #nav{transition:transform .45s cubic-bezier(.2,.7,.2,1),opacity .3s ease}
 html.at-intro #nav{transform:translateY(-110%);opacity:0;pointer-events:none}
 @media(prefers-reduced-motion:reduce){#ivCue,#introVideo:not(.unmuted) #ivSound{animation:none}}
+
+/* ---------- Championship mode ---------- */
+#champ{position:fixed;inset:0;z-index:300;background:var(--bg);color:var(--ink);font-family:var(--f-body);overflow:auto;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0)}
+#champ[hidden],#champBack[hidden]{display:none}
+.ch-wrap{max-width:1180px;margin:0 auto;padding:24px 16px 48px}
+.ch-top{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.ch-kick{font:700 11.5px var(--f-body);letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+#chTitle{margin:8px 0 0;font:800 32px/1.1 var(--f-body);letter-spacing:.04em;text-transform:uppercase}
+.ch-h2{margin:8px 0 0;font:800 24px/1.2 var(--f-body)}.ch-h3{margin:24px 0 8px;font:700 13px var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--ink2)}
+.ch-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+.ch-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:24px;align-items:start}
+@media(max-width:860px){.ch-grid{grid-template-columns:1fr}#chTitle{font-size:24px}}
+.ch-panel{background:var(--panel);border:1px solid var(--line2);border-radius:var(--r);padding:16px 16px 24px}
+.ch-panel>h2,.ch-dlg>h2{margin:0 0 16px;font:700 13px var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.ch-muted{color:var(--ink3);font-size:14px;line-height:1.5;margin:8px 0}.ch-note{color:var(--ink3);font-size:12.5px;line-height:1.5;margin:16px 0 0}
+.ch-btn{font:700 12.5px var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:#1c1604;background:var(--gold);border:1px solid var(--gold);border-radius:var(--r);padding:12px 16px;cursor:pointer}
+.ch-btn:hover{background:var(--gold2)}.ch-btn.ghost{background:transparent;color:var(--ink2);border-color:var(--line2)}.ch-btn.ghost:hover{color:var(--ink);border-color:var(--gold)}
+.ch-btn.sm{padding:8px 12px;font-size:11.5px}.ch-btn:disabled,.ch-mode:disabled{opacity:.45;cursor:not-allowed}
+#champ button:focus-visible,#champ input:focus-visible,#champ textarea:focus-visible,#champBack:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
+.ch-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.ch-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.ch-card-s{background:var(--panel);border:1px solid var(--line2);border-radius:var(--r);padding:16px}
+.ch-open{display:grid;gap:8px;width:100%;text-align:left;background:none;border:0;color:var(--ink);font:500 14px/1.5 var(--f-body);cursor:pointer;padding:0}
+.ch-open strong{font-size:18px}
+.ch-badge{display:inline-block;width:max-content;font:700 10.5px var(--f-body);letter-spacing:.1em;text-transform:uppercase;padding:4px 8px;border:1px solid var(--line2);border-radius:999px;color:var(--ink3)}.ch-badge.on{color:var(--gold2);border-color:var(--gold)}
+.ch-scroll{overflow-x:auto}.ch-t{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+.ch-t th{font:700 11px var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);text-align:center;padding:8px;border-bottom:1px solid var(--line2)}
+.ch-t td{text-align:center;padding:8px;border-bottom:1px solid var(--line)}.ch-t .l{text-align:left}.ch-t .r{text-align:right;white-space:nowrap}
+.ch-t tr.me td{background:rgba(242,194,48,.1)}
+.ch-form,.ch-dlg{display:grid;gap:16px}.ch-form label,.ch-dlg label{display:grid;gap:8px;font:700 11px var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--ink3)}
+#champ input,#champ textarea{font:500 15px var(--f-body);color:var(--ink);background:var(--bg);border:1px solid var(--line2);border-radius:var(--r);padding:12px;width:100%;box-sizing:border-box}
+.ch-warn{margin:16px 0 0;padding:12px;border:1px solid var(--gold);border-radius:var(--r);color:var(--gold2);font-size:14px;line-height:1.5}
+.ch-err{color:#ff8a8a;font-size:13.5px;min-height:0}.ch-err:empty{display:none}
+.ch-slots{list-style:none;margin:16px 0;padding:0;display:grid;gap:8px}.ch-slots li{display:flex;justify-content:space-between;gap:16px;padding:8px 12px;border:1px solid var(--line);border-radius:var(--r);font-size:14px}
+.ch-modes{display:grid;gap:16px;margin:16px 0}
+.ch-mode{display:grid;gap:8px;text-align:left;background:var(--panel2);color:var(--ink);border:1px solid var(--line2);border-radius:var(--r);padding:16px;cursor:pointer;font:500 13.5px/1.5 var(--f-body)}
+.ch-mode strong{font:700 16px var(--f-body);color:var(--gold2)}.ch-mode:hover:not(:disabled){border-color:var(--gold)}.ch-mode span{color:var(--ink3)}
+.ch-modal{position:fixed;inset:0;z-index:10;background:rgba(0,0,0,.7);display:grid;place-items:center;padding:16px}
+.ch-dlg{background:var(--panel);border:1px solid var(--line2);border-radius:var(--r);padding:24px;width:min(440px,100%);max-height:90vh;overflow:auto}
+#champBack{position:fixed;z-index:250;top:max(16px,env(safe-area-inset-top,0px));right:16px;font:700 12px var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:#1c1604;background:var(--gold);border:1px solid var(--gold2);border-radius:var(--r);padding:12px 16px;cursor:pointer}
+#champBack[data-state=saved]{animation:chPulse 1.4s ease-in-out infinite}
+@keyframes chPulse{50%{box-shadow:0 0 0 6px rgba(242,194,48,.3)}}
+@media(prefers-reduced-motion:reduce){#champBack[data-state=saved]{animation:none}}
 </style>
 </head>
 <body>
@@ -938,6 +981,7 @@ html.at-intro #nav{transform:translateY(-110%);opacity:0;pointer-events:none}
         </div>
 
         <button type="button" class="sim-start" id="simStart"><span id="simStartTxt">Start</span><i aria-hidden="true">⛶</i></button>
+        <button type="button" class="sim-start" id="champOpen" style="margin-top:12px"><span>Championship</span><i aria-hidden="true">🏆</i></button>
         <p class="sim-status" id="simStatus">Loading simulator…</p>
         <p class="sim-note">Starts with the game's default settings. Robot, alliance, bots and controls can be changed any time in the in-game menu.</p>
       </div>
@@ -949,6 +993,16 @@ html.at-intro #nav{transform:translateY(-110%);opacity:0;pointer-events:none}
     </div>
   </div>
 </section>
+
+<!-- ===================== CHAMPIONSHIP (overlay above the simulator) ===================== -->
+<section id="champ" data-i18n-skip hidden aria-label="Championship">
+  <div class="ch-wrap">
+    <header class="ch-top"><div><div class="ch-kick">BIOBUZZ · FTC 2026–2027</div><h1 id="chTitle">Championship</h1></div><button type="button" class="ch-btn ghost" id="chClose">Close</button></header>
+    <main id="chBody"></main>
+  </div>
+</section>
+<button type="button" id="champBack" hidden data-i18n-skip></button>
+
 
 <footer>© NMA Thunderclaw · FTC Team 32807 · Da Nang, Vietnam</footer>
 
@@ -3001,6 +3055,12 @@ p2KDPx7uwteczgNQxJQsvXtlXRdCG8Z8g7iVDI4395EyhDptqYUpf0QFK+fd0RYKVtqdESH03Es+j2Su
           "  mo.observe(document.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ATTR });\n"
         + "  window.addEventListener('message', function (e) { var d = e.data; if (!d || !d.tcLang) return; var l = d.tcLang === 'en' ? 'en' : 'vi';"
         + " try { if (window.BBAPP && window.BBAPP.set && window.BBAPP.set.lang !== l) { window.BBAPP.set.lang = l; window.BBAPP.save && window.BBAPP.save(); } } catch (x) {} API.set(l, true); });");
+      // ---- Championship: 'champ' match kind (solo = player + bot partner, duo = two humans) vs 2 bots; result goes to the host page ----
+      rep("S.buildMatch = function (kind) {", "S.buildMatch = function (kind) {\n  var CH = null; if (kind === 'champ') { CH = window.CHAMP_CFG || { mode: 'solo' }; kind = CH.mode === 'duo' ? 'coop' : 'match'; var gp = 0; try { Array.prototype.forEach.call(navigator.getGamepads() || [], function (g) { if (g) gp++; }); } catch (e) {} if (!gp) S.set.kbDrive = true; CH.gp = gp; }");
+      rep("  const st = S.set, robots = [], humans = [];", "  const st = CH ? Object.assign({}, S.set, CH.mode === 'duo' ? { dMode: 'coop', dSkill: S.set.dSkill === 'none' ? 'normal' : S.set.dSkill, dDev1: CH.gp >= 2 ? 'gp0' : 'kbA', dDev2: CH.gp >= 2 ? 'gp1' : 'kbB' } : {}) : S.set, robots = [], humans = [];");
+      rep("REC.finish(S.sim); H.results();", "REC.finish(S.sim); H.results(); if (S.lastKind === 'champ') { try { var _al = S.match.robots[0].alliance, _f = S.sim.final; window.parent.postMessage({ tcChamp: { type: 'result', team: _f[_al].total, opp: _f[_al === 'R' ? 'B' : 'R'].total } }, '*'); } catch (e) {} }");
+      rep("S.toMenu = function (screen) {", "window.__champScore = function () { try { var f = BB.finalScore(S.sim), a = S.match.robots[0].alliance, o = a === 'R' ? 'B' : 'R'; return { team: f[a].total | 0, opp: f[o].total | 0 }; } catch (e) { return null; } };\nS.toMenu = function (screen) {\n  if (S.lastKind === 'champ' && S.mode === 'play' && S.sim && S.sim.phase !== 'done') { try { var _q = window.__champScore() || {}; window.parent.postMessage({ tcChamp: { type: 'quit', team: _q.team | 0, opp: _q.opp | 0 } }, '*'); } catch (e) {} }");
+      rep("S.rematch = function () {", "S.rematch = function () { if (S.lastKind === 'champ') { try { window.parent.postMessage({ tcChamp: { type: 'exit' } }, '*'); } catch (e) {} return; }");
       // a stale saved language must not disagree with the language actually shown
       rep("  S.set.mig = 3;\n", "  S.set.mig = 3;\n  if (window.BBI18N) S.set.lang = window.BBI18N.lang;\n");
       // site look: warm Thunderclaw palette instead of the game's own cool grey-green. The CSS lives in #simTheme;
@@ -3125,8 +3185,360 @@ p2KDPx7uwteczgNQxJQsvXtlXRdCG8Z8g7iVDI4395EyhDptqYUpf0QFK+fd0RYKVtqdESH03Es+j2Su
     isOpen = open;
   };
   window.__simRoute();          // deep link straight to #simulator
+  window.__simApi = { boot: boot, ready: ready, simApp: simApp, ifr: ifr };
 })();
 
+</script>
+<script>
+/* ---- Championship mode: seasons, team login, lobby, leaderboard, admin, results export ---- */
+(function () {
+  'use strict';
+  var $ = function (i) { return document.getElementById(i); };
+  var root = $('champ'), body = $('chBody');
+  if (!root || !body) return;
+
+  /* ---------- i18n: UI strings are English; Vietnamese is added to the site's TCI18N dictionary ---------- */
+  var VI = {
+    'Championship': 'Championship', 'Seasons': 'Các mùa giải', 'Season': 'Mùa giải', 'Close': 'Đóng', 'Back': 'Quay lại',
+    'Create Season': 'Tạo mùa giải', 'Edit': 'Sửa', 'Delete': 'Xóa', 'Cancel': 'Hủy', 'Save': 'Lưu', 'Loading…': 'Đang tải…',
+    'No seasons yet.': 'Chưa có mùa giải nào.', 'Open': 'Đang mở', 'Finalized': 'Đã chốt kết quả',
+    'Name': 'Tên', 'Start time': 'Thời gian bắt đầu', 'End time': 'Thời gian kết thúc', 'Short description': 'Mô tả ngắn',
+    'Edit season': 'Sửa mùa giải', 'Delete this season and all its teams and results?': 'Xóa mùa giải này cùng toàn bộ đội và kết quả?',
+    'Leaderboard': 'Bảng xếp hạng', 'Rank': 'Hạng', 'Team': 'Đội', 'Wins': 'Thắng', 'Draws': 'Hòa', 'Losses': 'Thua',
+    'W': 'T', 'D': 'H', 'L': 'B', 'Played': 'Số trận', 'Points': 'Điểm', 'Score': 'Tổng score', 'No teams yet.': 'Chưa có đội nào.',
+    'Win = 3 pts · Draw = 1 pt · Loss = 0. Tie on points: higher total score. Still tied: shared rank.': 'Thắng = 3 điểm · Hòa = 1 điểm · Thua = 0. Bằng điểm: xét tổng score cao hơn. Vẫn bằng: đồng hạng.',
+    'Team login': 'Đăng nhập đội', 'Username': 'Tên đăng nhập', 'Password': 'Mật khẩu', 'Log in': 'Đăng nhập',
+    'Username format: team name + number, e.g. Thunderclaw01. Accounts are issued by the organisers.': 'Định dạng: tên đội + mã số, ví dụ Thunderclaw01. Tài khoản do ban tổ chức cấp.',
+    'Team lobby': 'Phòng chờ của đội', 'Log out': 'Đăng xuất', 'Attempts used': 'Số lượt đã chơi',
+    'Each team can play at most 4 matches in this season.': 'Mỗi đội chỉ được chơi tối đa 4 trận trong mùa giải.',
+    'Attempt': 'Lượt', 'Win': 'Thắng', 'Draw': 'Hòa', 'Loss': 'Thua', 'Not finished (counts as a loss)': 'Chưa hoàn thành (tính là thua)',
+    '2 Players – 1 Device': '2 người chơi – 1 thiết bị', '1 Player – 1 Bot': '1 người chơi – 1 bot',
+    'Two players share this device and drive both robots of your alliance against 2 bots.': 'Hai người dùng chung thiết bị, mỗi người lái một robot của liên minh mình, đấu với 2 bot.',
+    'You drive one robot, a bot drives your partner robot, against 2 bots.': 'Bạn lái một robot, bot lái robot đồng đội, đấu với 2 bot.',
+    'Season is finalized.': 'Mùa giải đã chốt kết quả.',
+    'Admin panel': 'Bảng quản trị', 'Team accounts': 'Tài khoản đội', 'Add team': 'Thêm đội', 'Edit team': 'Sửa đội', 'Matches': 'Số trận',
+    'New password (leave empty to keep)': 'Mật khẩu mới (để trống nếu giữ nguyên)', 'Delete this team and all its matches?': 'Xóa đội này cùng toàn bộ trận đấu?',
+    'Match results': 'Kết quả trận đấu', 'No matches yet.': 'Chưa có trận nào.', 'Mode': 'Chế độ', 'Status': 'Trạng thái',
+    'Team score': 'Score của đội', 'Opponent score': 'Score đối thủ', 'Edit result': 'Sửa kết quả', 'Delete this match result?': 'Xóa kết quả trận này?',
+    'Duo': '2 người', 'Solo': '1 người + bot', 'Done': 'Xong', 'Started': 'Đang chơi',
+    'Generate Results': 'Tổng hợp kết quả', 'Generate the official results? New matches will be locked.': 'Tổng hợp kết quả chính thức? Các trận mới sẽ bị khóa.',
+    'Official results generated.': 'Đã tổng hợp kết quả chính thức.', 'Download CSV': 'Tải CSV', 'Download XLSX': 'Tải XLSX',
+    'Admin': 'Quản trị', 'Create an admin session on the site first (Admin login).': 'Hãy đăng nhập quản trị trên trang trước (Admin login).',
+    'Result saved': 'Đã lưu kết quả', 'Result saved · Back to lobby': 'Đã lưu kết quả · Về phòng chờ', 'Back to Championship': 'Về Championship',
+    'Match over': 'Trận đã kết thúc', 'Saving result…': 'Đang lưu kết quả…', 'Could not save the result': 'Không lưu được kết quả',
+    'Season name': 'Tên mùa giải', 'Pts': 'Điểm',
+    'This season has not started yet.': 'Mùa giải chưa bắt đầu.', 'This season has ended.': 'Mùa giải đã kết thúc.', 'Starting the simulator…': 'Đang khởi động simulator…',
+    'simulator blocked': 'Không mở được simulator. Hãy chạy trang qua http://localhost (ví dụ Live Server) hoặc tên miền thật, đừng mở trực tiếp file .html.',
+    'Leave the match? It will count as a loss with your current score.': 'Rời trận? Trận này sẽ bị xử thua và ghi nhận điểm hiện tại của đội.',
+    'Match abandoned. It was recorded as a loss with your score at that moment.': 'Đội đã rời trận. Trận được xử thua và ghi nhận điểm tại thời điểm rời.',
+    'Leaving a match early counts as a loss with your current score.': 'Rời trận giữa chừng sẽ bị xử thua, lấy điểm hiện tại của đội.',
+    'wrong username or password': 'Sai tên đăng nhập hoặc mật khẩu', 'invalid session': 'Phiên đăng nhập đã hết hạn', 'no attempts left': 'Đội đã hết lượt chơi',
+    'season closed': 'Mùa giải đã đóng', 'outside season time': 'Ngoài thời gian của mùa giải', 'a match is already in progress': 'Đang có một trận chưa kết thúc',
+    'already submitted': 'Kết quả đã được gửi', 'result rejected (too fast)': 'Kết quả bị từ chối (trận quá ngắn)', 'result rejected (range)': 'Kết quả bị từ chối (điểm không hợp lệ)',
+    'admin only': 'Chỉ dành cho quản trị viên', 'bad username': 'Tên đăng nhập chỉ gồm chữ, số, _ hoặc - (3–32 ký tự)', 'password required': 'Cần nhập mật khẩu',
+    'name required': 'Cần nhập tên', 'simulator not ready': 'Simulator chưa sẵn sàng', 'Error': 'Lỗi'
+  };
+  if (window.TCI18N && TCI18N.add) TCI18N.add(VI);
+  var T = function (s) { return window.TCI18N && TCI18N.t ? TCI18N.t(s) : s; };
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+  var errText = function (e) { return T((e && e.message) || 'Error'); };
+
+  /* ---------- state + Supabase ---------- */
+  var st = { view: 'seasons', seasons: [], sid: null, board: [], admin: false, sess: null, teams: [], matches: [], mine: [], active: null, final: null, err: '', note: '', busy: false };
+  try { st.sess = JSON.parse(sessionStorage.getItem('champ-sess') || 'null'); } catch (e) {}
+  var timer = null;
+
+  function db() { if (typeof sb === 'undefined' || !sb) throw new Error('Supabase not available'); return sb; }
+  function rpc(fn, args) { return db().rpc(fn, args || {}).then(function (r) { if (r.error) throw r.error; return r.data; }); }
+  var one = function (r) { return Array.isArray(r) ? r[0] : r; };
+  var cur = function () { return st.seasons.filter(function (s) { return s.id === st.sid; })[0]; };
+  var fmt = function (iso) { return iso ? new Date(iso).toLocaleString(document.documentElement.lang === 'vi' ? 'vi-VN' : 'en-GB', { dateStyle: 'medium', timeStyle: 'short' }) : ''; };
+  var loc = function (iso) { if (!iso) return ''; var d = new Date(iso); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 16); };
+  var iso = function (v) { return v ? new Date(v).toISOString() : null; };
+  var range = function (s) { return s.starts_at || s.ends_at ? fmt(s.starts_at) + ' → ' + fmt(s.ends_at) : ''; };
+
+  async function checkAdmin() {
+    try { st.admin = typeof checkIsAdmin === 'function' ? !!(await checkIsAdmin()) : !!(await rpc('is_admin')); } catch (e) { st.admin = false; }
+  }
+  async function loadBoard() { st.board = (await rpc('champ_leaderboard', { p_season: st.sid })) || []; }
+  async function refresh() {
+    st.err = '';
+    try {
+      await checkAdmin();
+      st.seasons = (await rpc('champ_list_seasons')) || [];
+      if (st.view === 'season') {
+        if (!cur()) { st.view = 'seasons'; }
+        else {
+          await loadBoard();
+          if (st.admin) { st.teams = (await rpc('champ_admin_list_teams', { p_season: st.sid })) || []; st.matches = (await rpc('champ_admin_list_matches', { p_season: st.sid })) || []; }
+          else if (st.sess && st.sess.season_id === st.sid) st.mine = (await rpc('champ_my_matches', { p_token: st.sess.token })) || [];
+        }
+      }
+    } catch (e) {
+      if (/invalid session/.test(e.message || '')) logout(true); else st.err = errText(e);
+    }
+    render();
+  }
+  function logout(silent) { st.sess = null; st.mine = []; try { sessionStorage.removeItem('champ-sess'); } catch (e) {} if (!silent) render(); }
+
+  /* ---------- views ---------- */
+  function boardHtml() {
+    if (!st.board.length) return '<p class="ch-muted">' + T('No teams yet.') + '</p>';
+    var me = st.sess && st.sess.username;
+    return '<div class="ch-scroll"><table class="ch-t"><thead><tr><th scope="col">' + T('Rank') + '</th><th scope="col" class="l">' + T('Team') + '</th><th scope="col" title="' + T('Wins') + '">' + T('W') +
+      '</th><th scope="col" title="' + T('Draws') + '">' + T('D') + '</th><th scope="col" title="' + T('Losses') + '">' + T('L') + '</th><th scope="col">' + T('Pts') + '</th><th scope="col">' + T('Score') + '</th></tr></thead><tbody>' +
+      st.board.map(function (r) {
+        return '<tr' + (me && r.team.toLowerCase() === me.toLowerCase() ? ' class="me"' : '') + '><td>' + r.rank + '</td><td class="l">' + esc(r.team) + '</td><td>' + r.wins + '</td><td>' + r.draws + '</td><td>' + r.losses + '</td><td><b>' + r.points + '</b></td><td>' + r.score + '</td></tr>';
+      }).join('') + '</tbody></table></div><p class="ch-note">' + T('Win = 3 pts · Draw = 1 pt · Loss = 0. Tie on points: higher total score. Still tied: shared rank.') + '</p>';
+  }
+  function seasonsView() {
+    var cards = st.seasons.map(function (s) {
+      return '<article class="ch-card-s"><button type="button" class="ch-open" data-act="open" data-id="' + s.id + '"><span class="ch-badge' + (s.status === 'open' ? ' on' : '') + '">' + T(s.status === 'open' ? 'Open' : 'Finalized') + '</span>' +
+        '<strong>' + esc(s.name) + '</strong><span class="ch-muted">' + esc(range(s)) + '</span><span>' + esc(s.description) + '</span></button>' +
+        (st.admin ? '<div class="ch-row"><button type="button" class="ch-btn ghost sm" data-act="edit-season" data-id="' + s.id + '">' + T('Edit') + '</button><button type="button" class="ch-btn ghost sm" data-act="del-season" data-id="' + s.id + '">' + T('Delete') + '</button></div>' : '') + '</article>';
+    }).join('');
+    return '<div class="ch-bar"><h2 class="ch-h2">' + T('Seasons') + '</h2>' + (st.admin ? '<button type="button" class="ch-btn" data-act="new-season">+ ' + T('Create Season') + '</button>' : '') + '</div>' +
+      (cards ? '<div class="ch-cards">' + cards + '</div>' : '<p class="ch-muted">' + T('No seasons yet.') + '</p>');
+  }
+  function loginHtml() {
+    return '<h2>' + T('Team login') + '</h2><form id="chLogin" class="ch-form"><label>' + T('Username') + '<input name="u" autocomplete="username" required maxlength="32"></label><label>' + T('Password') +
+      '<input name="p" type="password" autocomplete="current-password" required></label><div class="ch-err" role="alert">' + esc(st.err) + '</div><button class="ch-btn">' + T('Log in') + '</button></form><p class="ch-note">' +
+      T('Username format: team name + number, e.g. Thunderclaw01. Accounts are issued by the organisers.') + '</p>';
+  }
+  function lobbyHtml(s) {
+    var used = st.mine.length, slots = '';
+    for (var i = 1; i <= 4; i++) {
+      var m = st.mine.filter(function (x) { return x.attempt_no === i; })[0], txt = '—';
+      if (m) txt = m.status === 'done' ? T(m.outcome === 'win' ? 'Win' : m.outcome === 'draw' ? 'Draw' : 'Loss') + ' · ' + m.team_score + ' – ' + m.opp_score : T('Not finished (counts as a loss)');
+      slots += '<li><span>' + T('Attempt') + ' ' + i + '</span><b>' + esc(txt) + '</b></li>';
+    }
+    var nowT = Date.now(), early = !!s.starts_at && nowT < new Date(s.starts_at).getTime(), late = !!s.ends_at && nowT > new Date(s.ends_at).getTime();
+    var off = used >= 4 || s.status !== 'open' || early || late || st.busy ? ' disabled' : '';
+    return '<h2>' + T('Team lobby') + ' · ' + esc(st.sess.username) + '</h2><p class="ch-muted">' + T('Attempts used') + ': ' + used + ' / 4. ' + T('Each team can play at most 4 matches in this season.') + (s.status !== 'open' ? ' ' + T('Season is finalized.') : '') + '</p><ul class="ch-slots">' + slots + '</ul>' +
+      '<div class="ch-modes"><button type="button" class="ch-mode" data-act="play" data-mode="duo"' + off + '><strong>' + T('2 Players – 1 Device') + '</strong><span>' + T('Two players share this device and drive both robots of your alliance against 2 bots.') + '</span></button>' +
+      '<button type="button" class="ch-mode" data-act="play" data-mode="solo"' + off + '><strong>' + T('1 Player – 1 Bot') + '</strong><span>' + T('You drive one robot, a bot drives your partner robot, against 2 bots.') + '</span></button></div>' +
+      (st.busy ? '<p class="ch-warn" role="status">' + T('Starting the simulator…') + '</p>' : '') + (early ? '<p class="ch-warn" role="status">' + T('This season has not started yet.') + ' ' + esc(fmt(s.starts_at)) + '</p>' : '') + (late ? '<p class="ch-warn" role="status">' + T('This season has ended.') + '</p>' : '') +
+      (st.note ? '<p class="ch-warn" role="status">' + esc(st.note) + '</p>' : '') + '<p class="ch-note">' + T('Leaving a match early counts as a loss with your current score.') + '</p><div class="ch-err" role="alert">' + esc(st.err) + '</div><button type="button" class="ch-btn ghost" data-act="logout">' + T('Log out') + '</button>';
+  }
+  function adminHtml(s) {
+    var teams = st.teams.map(function (t) { return '<tr><td class="l">' + esc(t.username) + '</td><td>' + t.matches + '</td><td class="r"><button type="button" class="ch-btn ghost sm" data-act="edit-team" data-id="' + t.id + '">' + T('Edit') + '</button> <button type="button" class="ch-btn ghost sm" data-act="del-team" data-id="' + t.id + '">' + T('Delete') + '</button></td></tr>'; }).join('');
+    var ms = st.matches.map(function (m) {
+      var sc = m.status === 'done' ? m.team_score + ' – ' + m.opp_score : '—';
+      return '<tr><td class="l">' + esc(m.username) + '</td><td>' + m.attempt_no + '</td><td>' + T(m.mode === 'duo' ? 'Duo' : 'Solo') + '</td><td>' + (m.status === 'done' ? T(m.outcome === 'win' ? 'Win' : m.outcome === 'draw' ? 'Draw' : 'Loss') : T('Started')) + '</td><td>' + sc +
+        '</td><td class="r"><button type="button" class="ch-btn ghost sm" data-act="edit-match" data-id="' + m.id + '">' + T('Edit') + '</button> <button type="button" class="ch-btn ghost sm" data-act="del-match" data-id="' + m.id + '">' + T('Delete') + '</button></td></tr>';
+    }).join('');
+    return '<h2>' + T('Admin panel') + '</h2><div class="ch-bar"><h3 class="ch-h3">' + T('Team accounts') + '</h3><button type="button" class="ch-btn sm" data-act="new-team">+ ' + T('Add team') + '</button></div>' +
+      (teams ? '<div class="ch-scroll"><table class="ch-t"><thead><tr><th class="l" scope="col">' + T('Username') + '</th><th scope="col">' + T('Matches') + '</th><th></th></tr></thead><tbody>' + teams + '</tbody></table></div>' : '<p class="ch-muted">' + T('No teams yet.') + '</p>') +
+      '<h3 class="ch-h3">' + T('Match results') + '</h3>' + (ms ? '<div class="ch-scroll"><table class="ch-t"><thead><tr><th class="l" scope="col">' + T('Team') + '</th><th scope="col">#</th><th scope="col">' + T('Mode') + '</th><th scope="col">' + T('Status') + '</th><th scope="col">' + T('Score') + '</th><th></th></tr></thead><tbody>' + ms + '</tbody></table></div>' : '<p class="ch-muted">' + T('No matches yet.') + '</p>') +
+      '<div class="ch-err" role="alert">' + esc(st.err) + '</div><div class="ch-row"><button type="button" class="ch-btn" data-act="gen">' + T('Generate Results') + '</button>' +
+      (s.status === 'finalized' || st.final ? '<button type="button" class="ch-btn ghost" data-act="csv">' + T('Download CSV') + '</button><button type="button" class="ch-btn ghost" data-act="xlsx">' + T('Download XLSX') + '</button>' : '') + '</div>';
+  }
+  function seasonView() {
+    var s = cur(); if (!s) return '';
+    var right = st.admin ? adminHtml(s) : st.sess && st.sess.season_id === s.id ? lobbyHtml(s) : loginHtml();
+    return '<div class="ch-bar"><div><button type="button" class="ch-btn ghost sm" data-act="back">← ' + T('Back') + '</button><h2 class="ch-h2">' + esc(s.name) + ' <span class="ch-badge' + (s.status === 'open' ? ' on' : '') + '">' + T(s.status === 'open' ? 'Open' : 'Finalized') + '</span></h2>' +
+      '<p class="ch-muted">' + esc(range(s)) + (s.description ? ' · ' + esc(s.description) : '') + '</p></div></div>' +
+      '<div class="ch-grid"><section class="ch-panel" aria-label="' + T('Leaderboard') + '"><h2>' + T('Leaderboard') + '</h2><div id="chBoard">' + boardHtml() + '</div></section><section class="ch-panel">' + right + '</section></div>';
+  }
+  function render() {
+    $('chTitle').textContent = T('Championship');
+    $('chClose').textContent = T('Close');
+    body.innerHTML = st.view === 'season' ? seasonView() : seasonsView();
+  }
+
+  /* ---------- modal form helper ---------- */
+  function modal(title, fields, onOk) {
+    var w = document.createElement('div'); w.className = 'ch-modal'; w.setAttribute('data-i18n-skip', '');
+    w.innerHTML = '<form class="ch-dlg" role="dialog" aria-modal="true" aria-label="' + esc(T(title)) + '"><h2>' + esc(T(title)) + '</h2>' + fields.map(function (f) {
+      var inp = f.type === 'area' ? '<textarea name="' + f.k + '" rows="3" maxlength="300">' + esc(f.v || '') + '</textarea>' :
+        '<input name="' + f.k + '" type="' + (f.type || 'text') + '" value="' + esc(f.v == null ? '' : f.v) + '"' + (f.req ? ' required' : '') + (f.min != null ? ' min="' + f.min + '" max="600"' : '') + (f.type === 'password' ? ' autocomplete="new-password"' : '') + '>';
+      return '<label>' + esc(T(f.l)) + inp + '</label>';
+    }).join('') + '<div class="ch-err" role="alert"></div><div class="ch-row"><button type="button" class="ch-btn ghost" data-no>' + T('Cancel') + '</button><button class="ch-btn">' + T('Save') + '</button></div></form>';
+    root.appendChild(w);
+    var f = w.querySelector('form'), first = f.querySelector('input,textarea'); if (first) first.focus();
+    var done = function () { w.remove(); };
+    w.querySelector('[data-no]').onclick = done;
+    w.addEventListener('keydown', function (e) { if (e.key === 'Escape') { e.stopPropagation(); done(); } });
+    f.onsubmit = async function (e) {
+      e.preventDefault();
+      var v = {}; fields.forEach(function (x) { v[x.k] = f.elements[x.k].value; });
+      try { await onOk(v); done(); await refresh(); } catch (er) { f.querySelector('.ch-err').textContent = errText(er); }
+    };
+  }
+
+  /* ---------- admin actions ---------- */
+  function seasonForm(s) {
+    modal(s ? 'Edit season' : 'Create Season', [
+      { k: 'name', l: 'Name', v: s && s.name, req: 1 }, { k: 'start', l: 'Start time', type: 'datetime-local', v: s && loc(s.starts_at) },
+      { k: 'end', l: 'End time', type: 'datetime-local', v: s && loc(s.ends_at) }, { k: 'desc', l: 'Short description', type: 'area', v: s && s.description }
+    ], function (v) { return rpc('champ_admin_save_season', { p_id: s ? s.id : null, p_name: v.name, p_desc: v.desc, p_start: iso(v.start), p_end: iso(v.end) }); });
+  }
+  function teamForm(t) {
+    modal(t ? 'Edit team' : 'Add team', [{ k: 'u', l: 'Username', v: t && t.username, req: 1 }, { k: 'p', l: t ? 'New password (leave empty to keep)' : 'Password', type: 'password', req: !t }],
+      function (v) { return rpc('champ_admin_save_team', { p_id: t ? t.id : null, p_season: st.sid, p_username: v.u.trim(), p_password: v.p }); });
+  }
+  function matchForm(m) {
+    modal('Edit result', [{ k: 'a', l: 'Team score', type: 'number', v: m.team_score == null ? 0 : m.team_score, req: 1, min: 0 }, { k: 'b', l: 'Opponent score', type: 'number', v: m.opp_score == null ? 0 : m.opp_score, req: 1, min: 0 }],
+      function (v) { return rpc('champ_admin_edit_match', { p_id: m.id, p_team_score: +v.a, p_opp_score: +v.b }); });
+  }
+  async function results() {
+    if (st.final) return st.final;
+    var r = await rpc('champ_final_results', { p_season: st.sid });
+    return r && r.length ? r : st.board;
+  }
+  function download(name, blob) { var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000); }
+  function table(rows) {
+    var head = [T('Rank'), T('Team'), T('Played'), T('Wins'), T('Draws'), T('Losses'), T('Points'), T('Score')];
+    return [head].concat(rows.map(function (r) { return [r.rank, r.team, r.played, r.wins, r.draws, r.losses, r.points, r.score]; }));
+  }
+  var slug = function () { var s = cur(); return (s ? s.name : 'season').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'season'; };
+  async function exportCsv() {
+    var csv = table(await results()).map(function (r) { return r.map(function (c) { c = String(c); return /[",\n]/.test(c) ? '"' + c.replace(/"/g, '""') + '"' : c; }).join(','); }).join('\r\n');
+    download('championship-' + slug() + '-results.csv', new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' }));
+  }
+  function loadXlsx() {
+    return window.XLSX ? Promise.resolve() : new Promise(function (ok, no) {
+      var s = document.createElement('script'); s.src = 'https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js'; s.onload = ok; s.onerror = no; document.head.appendChild(s);
+    });
+  }
+  async function exportXlsx() {
+    var rows = table(await results());
+    try { await loadXlsx(); } catch (e) { return exportCsv(); }          // offline / blocked CDN: fall back to CSV
+    var wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(rows), 'Results');
+    XLSX.writeFile(wb, 'championship-' + slug() + '-results.xlsx');
+  }
+
+  /* ---------- play: reserve attempt on the server, then start the game ---------- */
+  function simReady(api) {
+    return new Promise(function (ok, no) {
+      var n = 0, t = setInterval(function () {
+        var w = api.simApp(); n++;
+        if (w && w.BBAPP && w.BBAPP.mode && api.ready()) { clearInterval(t); return ok(); }
+        var blocked = false; try { void api.ifr.contentWindow.document; } catch (e) { blocked = true; }
+        if (blocked) { clearInterval(t); no(new Error('simulator blocked')); }
+        else if (n > 80) { clearInterval(t); no(new Error('simulator not ready')); }
+      }, 250);
+    });
+  }
+  async function play(mode) {
+    if (st.busy || !st.sess) return;
+    st.busy = true; st.err = ''; st.note = ''; render();
+    try {
+      var api = window.__simApi; if (!api) throw new Error('simulator not ready');
+      api.boot(); await simReady(api);                                   // make sure the game really runs BEFORE an attempt is spent
+      var r = one(await rpc('champ_start_match', { p_token: st.sess.token, p_mode: mode }));
+      st.active = { id: r.match_id, mode: mode, attempt: r.attempt_no, sent: false };
+      var w = api.simApp(), S = w.BBAPP;
+      w.CHAMP_CFG = { mode: mode };
+      if (w.BBAU && w.BBAU.ctx && w.BBAU.ctx.state === 'suspended') w.BBAU.ctx.resume();
+      if (S.mode !== 'menu' && S.toMenu) S.toMenu();
+      root.hidden = true; $('simLaunch').hidden = true; $('simFloat').hidden = true; backBtn('play');
+      S.start('champ');
+      setTimeout(function () { try { api.ifr.focus(); } catch (e) {} }, 60);
+    } catch (e) { st.err = errText(e); st.active = null; }
+    var perr = st.err; st.busy = false; stopTimer(); await refresh(); startTimer();
+    if (perr) { st.err = perr; render(); st.err = ''; }
+  }
+  function backBtn(state) {
+    var b = $('champBack'); b.hidden = !state; b.dataset.state = state || '';
+    b.textContent = state === 'saved' ? '✔ ' + T('Result saved · Back to lobby') : state === 'saving' ? T('Saving result…') : state === 'error' ? '⚠ ' + T('Could not save the result') : '🏆 ' + T('Back to Championship');
+  }
+  async function submit(d) {
+    backBtn('saving');
+    try { await rpc('champ_finish_match', { p_token: st.sess.token, p_match: st.active.id, p_team_score: d.team | 0, p_opp_score: d.opp | 0 }); backBtn('saved'); }
+    catch (e) { st.err = errText(e); backBtn('error'); }
+    st.active = null;
+  }
+  function openLobby() {
+    var api = window.__simApi, S = api && api.simApp() && api.simApp().BBAPP;
+    try { if (S && S.mode === 'play' && !S.paused && S.sim && S.sim.phase !== 'done' && S.togglePause) S.togglePause(); } catch (e) {}
+    try { if (document.fullscreenElement) document.exitFullscreen(); } catch (e) {}
+    backBtn(''); root.hidden = false; refresh(); startTimer();
+  }
+  addEventListener('message', function (e) {
+    var d = e.data && e.data.tcChamp; if (!d || !window.__simApi || e.source !== window.__simApi.ifr.contentWindow) return;
+    if (d.type === 'exit') openLobby();
+    else if (d.type === 'result' && st.active && !st.active.sent) { st.active.sent = true; submit(d); }
+    else if (d.type === 'quit' && st.active && !st.active.sent) { forfeit(d).then(function () { st.note = T('Match abandoned. It was recorded as a loss with your score at that moment.'); openLobby(); }); }
+  });
+  /* leaving a running match = loss with the score at that moment */
+  async function forfeit(sc) {
+    var a = st.active; if (!a || a.sent || !st.sess) return; a.sent = true;
+    try { await rpc('champ_forfeit_match', { p_token: st.sess.token, p_match: a.id, p_team_score: (sc && sc.team) | 0, p_opp_score: (sc && sc.opp) | 0 }); } catch (e) { st.err = errText(e); }
+    st.active = null;
+  }
+  function liveScore() { try { return window.__simApi.simApp().__champScore(); } catch (e) { return null; } }
+  setInterval(function () {                                              // live score -> server, so a crash is settled with a real score
+    var a = st.active; if (!a || a.sent || !st.sess) return;
+    var s = liveScore(); if (!s) return; a.last = s;
+    rpc('champ_heartbeat', { p_token: st.sess.token, p_match: a.id, p_team: s.team | 0, p_opp: s.opp | 0 }).catch(function () {});
+  }, 5000);
+  addEventListener('pagehide', function () {                             // tab closed / reloaded / navigated away
+    var a = st.active; if (!a || a.sent || !st.sess || typeof SB_URL === 'undefined') return;
+    var s = liveScore() || a.last || { team: 0, opp: 0 }; a.sent = true;
+    try { fetch(SB_URL + '/rest/v1/rpc/champ_forfeit_match', { method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/json', apikey: SB_ANON_KEY, Authorization: 'Bearer ' + SB_ANON_KEY }, body: JSON.stringify({ p_token: st.sess.token, p_match: a.id, p_team_score: s.team | 0, p_opp_score: s.opp | 0 }) }); } catch (e) {}
+  });
+  addEventListener('hashchange', function () {                           // left the simulator page mid-match
+    if (!st.active || st.active.sent || location.hash === '#simulator') return;
+    var s = liveScore(); forfeit(s); backBtn('');
+    try { window.__simApi.simApp().BBAPP.toMenu(); } catch (e) {}
+  });
+  $('champBack').addEventListener('click', async function () {
+    if (this.dataset.state === 'play' && st.active && !st.active.sent) {
+      if (!confirm(T('Leave the match? It will count as a loss with your current score.'))) return;
+      await forfeit(liveScore());
+      try { window.__simApi.simApp().BBAPP.toMenu(); } catch (e) {}
+      st.note = T('Match abandoned. It was recorded as a loss with your score at that moment.');
+    }
+    openLobby();
+  });
+
+  /* ---------- events ---------- */
+  function startTimer() { stopTimer(); timer = setInterval(async function () { if (root.hidden || st.view !== 'season' || document.hidden) return; try { await loadBoard(); var b = $('chBoard'); if (b) b.innerHTML = boardHtml(); } catch (e) {} }, 15000); }
+  function stopTimer() { if (timer) { clearInterval(timer); timer = null; } }
+  function open() { root.hidden = false; st.view = 'seasons'; body.innerHTML = '<p class="ch-muted">' + T('Loading…') + '</p>'; refresh(); startTimer(); $('chClose').focus(); }
+  function close() {
+    root.hidden = true; stopTimer();
+    if (!st.active) { $('simLaunch').hidden = false; $('simFloat').hidden = true; }
+  }
+  var opener = $('champOpen'); if (opener) opener.addEventListener('click', open);
+  $('chClose').addEventListener('click', close);
+  root.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !root.querySelector('.ch-modal')) close(); });
+  addEventListener('tc-lang', function () { if (!root.hidden) render(); if (!$('champBack').hidden) backBtn($('champBack').dataset.state); });
+
+  body.addEventListener('submit', async function (e) {
+    if (e.target.id !== 'chLogin') return;
+    e.preventDefault(); var f = e.target, u = f.elements.u.value.trim();
+    try {
+      var r = one(await rpc('champ_team_login', { p_season: st.sid, p_username: u, p_password: f.elements.p.value }));
+      st.sess = { token: r.token, season_id: st.sid, username: r.username };
+      try { sessionStorage.setItem('champ-sess', JSON.stringify(st.sess)); } catch (x) {}
+      await refresh();
+    } catch (er) { st.err = errText(er); render(); st.err = ''; }
+  });
+  body.addEventListener('click', async function (e) {
+    var b = e.target.closest('[data-act]'); if (!b || b.disabled) return;
+    var id = b.dataset.id, a = b.dataset.act;
+    var find = function (list) { return list.filter(function (x) { return x.id === id; })[0]; };
+    try {
+      if (a === 'open') { st.view = 'season'; st.sid = id; st.err = ''; st.final = null; await refresh(); }
+      else if (a === 'back') { st.view = 'seasons'; await refresh(); }
+      else if (a === 'new-season') seasonForm(null);
+      else if (a === 'edit-season') seasonForm(find(st.seasons));
+      else if (a === 'del-season') { if (confirm(T('Delete this season and all its teams and results?'))) { await rpc('champ_admin_delete_season', { p_id: id }); await refresh(); } }
+      else if (a === 'new-team') teamForm(null);
+      else if (a === 'edit-team') teamForm(find(st.teams));
+      else if (a === 'del-team') { if (confirm(T('Delete this team and all its matches?'))) { await rpc('champ_admin_delete_team', { p_id: id }); await refresh(); } }
+      else if (a === 'edit-match') matchForm(find(st.matches));
+      else if (a === 'del-match') { if (confirm(T('Delete this match result?'))) { await rpc('champ_admin_delete_match', { p_id: id }); await refresh(); } }
+      else if (a === 'gen') { if (confirm(T('Generate the official results? New matches will be locked.'))) { st.final = await rpc('champ_admin_finalize', { p_season: st.sid }); await refresh(); await exportCsv(); } }
+      else if (a === 'csv') await exportCsv();
+      else if (a === 'xlsx') await exportXlsx();
+      else if (a === 'logout') logout();
+      else if (a === 'play') play(b.dataset.mode);
+    } catch (er) { st.err = errText(er); render(); st.err = ''; }
+  });
+})();
 </script>
 <script>
 /* ---- Intro video: tự phát (không tiếng) khi nhìn thấy; cuộn khỏi thì tắt tiếng + dừng; bấm Home thì nhảy thẳng tới Home ---- */
